@@ -3,11 +3,9 @@ package com.dms;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -72,7 +70,40 @@ public class Main {
                 }
             }
 	        else if(command.contains("DROP TABLE")){
+                String schemaCSV = "schema.csv";
+                String tableName = command.split(" ")[2];
+                String tableCSV = tableName + ".csv";
 
+                CSVReader reader = null;
+                try {
+                    reader = new CSVReader(new FileReader(schemaCSV), ',' , '"' , 1);
+                    List<String[]> allElements = reader.readAll();
+
+                    //Read CSV line by line and use the string array as you want
+                    String[] nextLine;
+                    int rowNumber = 0;
+                    while ((nextLine = reader.readNext()) != null) {
+                        rowNumber++;
+                        if (nextLine[0].equals(tableName)) {
+                            allElements.remove(rowNumber);
+                            System.out.println(">> Table exists!");
+                            File file = new File(tableCSV);
+                            if (file.delete()) {
+                                System.out.println(">> File deleted successfully");
+                            } else {
+                                System.out.println("[!!] Failed to delete the file");
+                            }
+                            break;
+                        }
+                    }
+
+                    CSVWriter writer = new CSVWriter(new FileWriter(schemaCSV));
+                    writer.writeAll(allElements);
+                    writer.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 	        else if(command.contains("DESCRIBE")){
 
