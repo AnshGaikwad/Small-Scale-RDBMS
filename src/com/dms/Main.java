@@ -152,7 +152,10 @@ public class Main {
                     String[] nextLine;
                     while ((nextLine = reader.readNext()) != null) {
                         if(nextLine[0].equals(tableName)){
-                            System.out.println(Arrays.toString(nextLine));
+                            System.out.println(nextLine[0]);
+                            for(int i = 1; i < nextLine.length - 1; i+=2){
+                                System.out.println(nextLine[i] + " -- " + nextLine[i+1]);
+                            }
                         }
                     }
 
