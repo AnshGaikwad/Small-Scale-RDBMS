@@ -33,21 +33,12 @@ public class Main {
                 File schemaFile = new File(schemaCSV);
                 File tableFile = new File(tableCSV);
 
-                if(tableFile.exists()){
-                    System.out.println("[!!] Table exists already");
-                    tableExists = true;
-                }
-
-                if(tableExists){
-                    continue;
-                }
-
                 // Checking if the specified file exists or not
                 if (schemaFile.exists()) {
                     CSVReader reader;
                     try {
-                        reader = new CSVReader(new FileReader(schemaCSV), ',' , '"' , 1);
-
+                        reader = new CSVReader(new FileReader(schemaCSV));
+                        System.out.println(Arrays.toString(reader.readNext()));
                         //Read CSV line by line and use the string array as you want
                         String[] nextLine;
                         while ((nextLine = reader.readNext()) != null) {
@@ -113,27 +104,33 @@ public class Main {
                 String tableName = command.split(" ")[2];
                 String tableCSV = tableName + ".csv";
 
-                CSVReader reader;
+                CSVReader reader, reader2;
                 try {
-                    reader = new CSVReader(new FileReader(schemaCSV), ',' , '"' , 1);
-                    List<String[]> allElements = reader.readAll();
+                    reader = new CSVReader(new FileReader(schemaCSV));
+                    reader2 = new CSVReader(new FileReader(schemaCSV));
+                    List<String[]> allElements = reader2.readAll();
 
                     //Read CSV line by line and use the string array as you want
                     String[] nextLine;
                     int rowNumber = 0;
                     while ((nextLine = reader.readNext()) != null) {
-                        rowNumber++;
+                        System.out.println(tableName);
+                        System.out.println(nextLine[0]);
+                        System.out.println(rowNumber);
                         if (nextLine[0].equals(tableName)) {
+                            System.out.println(rowNumber);
                             allElements.remove(rowNumber);
                             System.out.println(">> Table exists!");
-                            File file = new File(tableCSV);
-                            if (file.delete()) {
-                                System.out.println(">> File deleted successfully");
-                            } else {
-                                System.out.println("[!!] Failed to delete the file");
-                            }
                             break;
                         }
+                        rowNumber++;
+                    }
+
+                    File file = new File(tableCSV);
+                    if (file.delete()) {
+                        System.out.println(">> File deleted successfully");
+                    } else {
+                        System.out.println("[!!] Failed to delete the file");
                     }
 
                     CSVWriter writer = new CSVWriter(new FileWriter(schemaCSV));
@@ -149,7 +146,7 @@ public class Main {
                 String schemaCSV = "schema.csv";
                 CSVReader reader;
                 try {
-                    reader = new CSVReader(new FileReader(schemaCSV), ',' , '"' , 1);
+                    reader = new CSVReader(new FileReader(schemaCSV));
 
                     //Read CSV line by line and use the string array as you want
                     String[] nextLine;
