@@ -106,6 +106,23 @@ public class Main {
                 }
             }
 	        else if(command.contains("DESCRIBE")){
+                String tableName = command.split(" ")[1];
+                String schemaCSV = "schema.csv";
+                CSVReader reader = null;
+                try {
+                    reader = new CSVReader(new FileReader(schemaCSV), ',' , '"' , 1);
+
+                    //Read CSV line by line and use the string array as you want
+                    String[] nextLine;
+                    while ((nextLine = reader.readNext()) != null) {
+                        if(nextLine[0].equals(tableName)){
+                            System.out.println(Arrays.toString(nextLine));
+                        }
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }else if(command.contains("EXIT")){
 	            break;
