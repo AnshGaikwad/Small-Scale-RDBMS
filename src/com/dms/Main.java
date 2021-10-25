@@ -15,7 +15,8 @@ public class Main {
 
 	    while(true){
 	        System.out.print("> ");
-	        String command = sc.next();
+	        String command = sc.nextLine();
+	        System.out.println(command);
 	        if(command.contains("CREATE TABLE")){
 	            String tableName = command.split(" ")[2];
 	            String schemaCSV = "schema.csv";
@@ -23,25 +24,61 @@ public class Main {
                 String attribute = command.substring(command.indexOf("(") + 1);
                 attribute = attribute.substring(0, attribute.indexOf(")"));
                 String[] attributes = attribute.split(" ");
-                Boolean tableExists = false;
-                CSVWriter tableWriter, schemaWriter = null;
 
-                CSVReader reader = null;
-                try {
-                    reader = new CSVReader(new FileReader(schemaCSV), ',' , '"' , 1);
+                System.out.println(tableName + Arrays.toString(attributes));
 
-                    //Read CSV line by line and use the string array as you want
-                    String[] nextLine;
-                    while ((nextLine = reader.readNext()) != null) {
-                        if(nextLine[0].equals(tableName)){
-                            System.out.println("[!!] Table exists already");
-                            tableExists = true;
-                        }
-                    }
+                boolean tableExists = false;
+                CSVWriter tableWriter, schemaWriter;
 
-                } catch (IOException e) {
-                    e.printStackTrace();
+                File schemaFile = new File(schemaCSV);
+                File tableFile = new File(tableCSV);
+
+                if(tableFile.exists()){
+                    System.out.println("[!!] Table exists already");
+                    tableExists = true;
                 }
+
+                if(tableExists){
+                    continue;
+                }
+
+                // Checking if the specified file exists or not
+                if (schemaFile.exists()) {
+                    CSVReader reader;
+                    try {
+                        reader = new CSVReader(new FileReader(schemaCSV), ',' , '"' , 1);
+
+                        //Read CSV line by line and use the string array as you want
+                        String[] nextLine;
+                        while ((nextLine = reader.readNext()) != null) {
+                            System.out.println(Arrays.toString(nextLine));
+                            if(nextLine[0].equals(tableName)){
+                                System.out.println("[!!] Table exists already");
+                                tableExists = true;
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else{
+                    try {
+                        File file = new File(schemaCSV);
+                        boolean result = file.createNewFile();
+                        System.out.println("File: " + file);
+                        if(result){
+                            System.out.println("File Created");
+                        }else{
+                            System.out.println("Error");
+                        }
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+
+
 
                 if(tableExists){
                     continue;
@@ -50,17 +87,19 @@ public class Main {
                 try {
                     tableWriter = new CSVWriter(new FileWriter(tableCSV));
                     schemaWriter = new CSVWriter(new FileWriter(schemaCSV, true));
-                    String schemaRecord = (tableName+",");
-                    String tableRecord = "";
+                    StringBuilder schemaRecord = new StringBuilder((tableName + ","));
+                    StringBuilder tableRecord = new StringBuilder();
                     for(int i = 0; i < attributes.length; i++){
-                        schemaRecord += i;
+                        schemaRecord.append(attributes[i]);
                         if(i%2 == 0){
-                            tableRecord += i;
-                            schemaRecord += ",";
+                            tableRecord.append(attributes[i]).append(",");
+                            schemaRecord.append(",");
                         }
                     }
-                    String[] schemaRecords = schemaRecord.split(",");
-                    String[] tableRecords = tableRecord.split(",");
+                    String[] schemaRecords = schemaRecord.toString().split(",");
+                    System.out.println(Arrays.toString(schemaRecords));
+                    String[] tableRecords = tableRecord.toString().split(",");
+                    System.out.println(Arrays.toString(tableRecords));
                     schemaWriter.writeNext(schemaRecords);
                     schemaWriter.close();
                     tableWriter.writeNext(tableRecords);
@@ -74,7 +113,7 @@ public class Main {
                 String tableName = command.split(" ")[2];
                 String tableCSV = tableName + ".csv";
 
-                CSVReader reader = null;
+                CSVReader reader;
                 try {
                     reader = new CSVReader(new FileReader(schemaCSV), ',' , '"' , 1);
                     List<String[]> allElements = reader.readAll();
@@ -108,7 +147,7 @@ public class Main {
 	        else if(command.contains("DESCRIBE")){
                 String tableName = command.split(" ")[1];
                 String schemaCSV = "schema.csv";
-                CSVReader reader = null;
+                CSVReader reader;
                 try {
                     reader = new CSVReader(new FileReader(schemaCSV), ',' , '"' , 1);
 
