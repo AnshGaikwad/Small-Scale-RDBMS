@@ -52,6 +52,7 @@ public class Main {
                         e.printStackTrace();
                     }
                 }
+
                 else{
                     try {
                         File file = new File(schemaCSV);
@@ -66,10 +67,6 @@ public class Main {
                         e.printStackTrace();
                     }
                 }
-
-
-
-
 
                 if(tableExists){
                     continue;
@@ -162,7 +159,6 @@ public class Main {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }else if(command.contains("EXIT")){
 	            break;
             }else{
