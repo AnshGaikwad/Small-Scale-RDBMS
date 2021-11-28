@@ -1,9 +1,6 @@
 package com.dms;
 
-import com.dms.commands.Create;
-import com.dms.commands.Describe;
-import com.dms.commands.Drop;
-import com.dms.commands.Help;
+import com.dms.commands.*;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
@@ -40,7 +37,26 @@ public class Main {
 	        else if(command.contains("DESCRIBE")){
                 Describe describe = new Describe(command);
                 describe.describeTable();
-            }else if(command.contains("Quit")){
+            }else if(command.contains("INSERT")){
+                Insert insert = new Insert(command);
+                String insertedInTable = insert.insertInsideTable();
+                if(insertedInTable != null)
+                    System.out.println(">> Value inserted inside" + insertedInTable + " Successfully");
+            }else if(command.contains("DELETE")){
+                Delete delete = new Delete(command);
+                String deletedFromTable = delete.deleteFromTable();
+                if(deletedFromTable != null)
+                    System.out.println(">> Value deleted from " + deletedFromTable + " Successfully");
+            }else if(command.contains("UPDATE")){
+                Update update = new Update(command);
+                String updatedInTable = update.updateTable();
+                if(updatedInTable != null)
+                    System.out.println(">> Value updated from" + updatedInTable + " Successfully");
+            }else if(command.contains("SELECT")){
+                Select select = new Select(command);
+                select.selectFromTable();
+            }
+            else if(command.contains("Quit")){
 	            break;
             }else{
 	            System.out.println("[!!] Invalid Input");
