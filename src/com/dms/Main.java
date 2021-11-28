@@ -40,8 +40,6 @@ public class Main {
 	        else if(command.contains("DESCRIBE")){
                 Describe describe = new Describe(command);
                 describe.describeTable();
-            }else if(command.contains("HELP TABLES")){
-                // Get all table names
             }else if(command.contains("Quit")){
 	            break;
             }else{

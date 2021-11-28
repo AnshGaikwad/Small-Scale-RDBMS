@@ -1,5 +1,11 @@
 package com.dms.commands;
 
+import com.opencsv.CSVReader;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Help {
 
     String command;
@@ -8,7 +14,9 @@ public class Help {
     }
 
     public void executeHelp(){
-        if(command.contains("CREATE TABLE")){
+        if(command.contains("TABLES")) {
+            executeHelpTables();
+        }else if(command.contains("CREATE TABLE")){
             createCommand();
         }else if(command.contains("DROP TABLE")){
             dropCommand();
@@ -157,5 +165,47 @@ public class Help {
                 "                            \"updated if there are no errors. Otherwise a descriptive error message should be\\n\" +\n" +
                 "                            \"printed.\\n";
         command(syntax, description, output);
+    }
+
+    private void executeHelpTables() {
+        String schemaCSV = "schema.csv";
+        File schemaFile = new File(schemaCSV);
+
+        // Checking if the specified file exists or not
+        if (schemaFile.exists()) {
+            try {
+                CSVReader reader = new CSVReader(new FileReader(schemaCSV));
+
+                //Read CSV line by line and use the string array as you want
+                String[] nextLine;
+
+                boolean tableExists = false, checkFirst = true;
+                while ((nextLine = reader.readNext()) != null) {
+                    if(checkFirst){
+                        System.out.println("Tables Defined:");
+                        tableExists = true;
+                        checkFirst = false;
+                    }
+                    System.out.println("=> " + nextLine[0]);
+                }
+
+                if(!tableExists)
+                    System.out.println(">> No Tables Defined!");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            try {
+                File file = new File(schemaCSV);
+                boolean result = file.createNewFile();
+                if(!result){
+                    System.out.println("[!!] Error creating new File");
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println(">> No Tables Defined!");
+        }
     }
 }
