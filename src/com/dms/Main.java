@@ -18,7 +18,26 @@ public class Main {
 	        System.out.print("> ");
 	        String command = sc.nextLine();
 	        System.out.println(command);
-	        if(command.contains("CREATE TABLE")){
+            if(command.contains("HELP")){
+                Help help = new Help();
+                if(command.contains("CREATE TABLE")){
+                    help.createCommand();
+                }else if(command.contains("DROP TABLE")){
+                    help.dropCommand();
+                }else if(command.contains("DESCRIBE")){
+                    help.describeCommand();
+                }else if(command.contains("SELECT")){
+                    help.selectCommand();
+                }else if(command.contains("INSERT")){
+                    help.insertCommand();
+                }else if(command.contains("DELETE")){
+                    help.deleteCommand();
+                }else if(command.contains("UPDATE")){
+                    help.updateCommand();
+                }else{
+                    System.out.println("Command doesn't exists");
+                }
+            }else if(command.contains("CREATE TABLE")){
 	            String tableName = command.split(" ")[2];
 	            String schemaCSV = "schema.csv";
                 String tableCSV = tableName + ".csv";
@@ -32,7 +51,6 @@ public class Main {
                 CSVWriter tableWriter, schemaWriter;
 
                 File schemaFile = new File(schemaCSV);
-                File tableFile = new File(tableCSV);
 
                 // Checking if the specified file exists or not
                 if (schemaFile.exists()) {
@@ -53,7 +71,6 @@ public class Main {
                         e.printStackTrace();
                     }
                 }
-
                 else{
                     try {
                         File file = new File(schemaCSV);
@@ -162,25 +179,6 @@ public class Main {
                 }
             }else if(command.contains("HELP TABLES")){
                 // Get all table names
-            }else if(command.contains("HELP")){
-                Help help = new Help();
-                if(command.contains("CREATE TABLE")){
-                    help.createCommand();
-                }else if(command.contains("DROP TABLE")){
-                    help.dropCommand();
-                }else if(command.contains("DESCRIBE")){
-                    help.describeCommand();
-                }else if(command.contains("SELECT")){
-                    help.selectCommand();
-                }else if(command.contains("INSERT")){
-                    help.insertCommand();
-                }else if(command.contains("DELETE")){
-                    help.deleteCommand();
-                }else if(command.contains("UPDATE")){
-                    help.updateCommand();
-                }else{
-                    System.out.println("Command doesn't exists");
-                }
             }else if(command.contains("Quit")){
 	            break;
             }else{
