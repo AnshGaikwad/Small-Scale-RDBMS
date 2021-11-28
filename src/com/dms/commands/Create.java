@@ -49,7 +49,7 @@ public class Create {
         return false;
     }
 
-    private void appendAttributes(String schemaCSV, String tableName){
+    private boolean appendAttributes(String schemaCSV, String tableName){
 
         CSVWriter tableWriter, schemaWriter;
 
@@ -81,6 +81,8 @@ public class Create {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return true;
     }
 
     public String createTable(){
@@ -88,13 +90,16 @@ public class Create {
         String schemaCSV = "schema.csv";
 
         boolean tableExists = checkIfTableExists(schemaCSV, tableName);
-
         if(tableExists){
             System.out.println("[!!] Table exists already");
             return null;
         }
 
-        appendAttributes(schemaCSV, tableName);
+        boolean appendAttributesDone = appendAttributes(schemaCSV, tableName);
+        if(!appendAttributesDone){
+            System.out.println("[!!] Attributes aren't updated");
+            return null;
+        }
 
         return tableName;
     }

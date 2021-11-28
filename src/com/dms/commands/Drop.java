@@ -3,10 +3,8 @@ package com.dms.commands;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.Arrays;
 import java.util.List;
 
 public class Drop {
@@ -21,41 +19,63 @@ public class Drop {
         String tableName = command.split(" ")[2];
         String tableCSV = tableName + ".csv";
 
-        CSVReader reader, reader2;
         try {
-            reader = new CSVReader(new FileReader(schemaCSV));
-            reader2 = new CSVReader(new FileReader(schemaCSV));
-            List<String[]> allElements = reader2.readAll();
 
-            //Read CSV line by line and use the string array as you want
-            String[] nextLine;
-            int rowNumber = 0;
-            while ((nextLine = reader.readNext()) != null) {
-                System.out.println(tableName);
-                System.out.println(nextLine[0]);
-                System.out.println(rowNumber);
-                if (nextLine[0].equals(tableName)) {
-                    System.out.println(rowNumber);
-                    allElements.remove(rowNumber);
-                    System.out.println(">> Table exists!");
-                    break;
-                }
-                rowNumber++;
+            List<String[]> allElements = getTable(schemaCSV, tableName);
+            if(allElements == null){
+                System.out.println("[!!] Table Doesn't Exists");
+                return null;
             }
 
-            File file = new File(tableCSV);
-            if (file.delete()) {
-                System.out.println(">> File deleted successfully");
-            } else {
+            boolean deleteFileSuccess = deleteTableCSV(tableCSV);
+            if(!deleteFileSuccess){
                 System.out.println("[!!] Failed to delete the file");
+                return null;
             }
 
-            CSVWriter writer = new CSVWriter(new FileWriter(schemaCSV));
-            writer.writeAll(allElements);
-            writer.close();
+            boolean schemeDataChange = deleteRowFromSchema(schemaCSV, allElements);
+            if(!schemeDataChange){
+                System.out.println("[!!] Failed to change schema file");
+                return null;
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return tableName;
+    }
+
+    private List<String[]> getTable(String schemaCSV, String tableName) throws IOException {
+        CSVReader readerAll = new CSVReader(new FileReader(schemaCSV));
+        List<String[]> allElements = readerAll.readAll();
+
+        //Read CSV line by line
+        String[] nextLine;
+        int rowNumber = 0;
+        CSVReader reader = new CSVReader(new FileReader(schemaCSV));
+        while ((nextLine = reader.readNext()) != null) {
+            if (nextLine[0].equals(tableName)) {
+                allElements.remove(rowNumber);
+
+                return allElements;
+            }
+            rowNumber++;
+        }
+        return null;
+    }
+
+    private boolean deleteRowFromSchema(String schemaCSV, List<String[]> allElements) throws IOException {
+
+        CSVWriter writer = new CSVWriter(new FileWriter(schemaCSV));
+        writer.writeAll(allElements);
+        writer.close();
+
+        return true;
+    }
+
+    private boolean deleteTableCSV(String tableCSV) {
+        File file = new File(tableCSV);
+        return file.delete();
     }
 }

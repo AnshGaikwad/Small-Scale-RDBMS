@@ -1,6 +1,7 @@
 package com.dms;
 
 import com.dms.commands.Create;
+import com.dms.commands.Drop;
 import com.dms.commands.Help;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -20,7 +21,6 @@ public class Main {
 	        System.out.print("> ");
 	        String command = sc.nextLine();
 	        System.out.println("Command: " + command);
-            command = command.toUpperCase(Locale.ROOT);
             if(command.contains("HELP")){
                 Help help = new Help(command);
                 help.executeHelp();
@@ -31,7 +31,10 @@ public class Main {
                     System.out.println(">> " + createdTable + " Table Created Successfully");
             }
 	        else if(command.contains("DROP TABLE")){
-
+                Drop drop = new Drop(command);
+                String droppedTable = drop.dropTable();
+                if(droppedTable != null)
+                    System.out.println(">> " + droppedTable + " Table Dropped Successfully");
             }
 	        else if(command.contains("DESCRIBE")){
                 String tableName = command.split(" ")[1];
