@@ -96,7 +96,8 @@ public class Delete {
 
     private String[] getCondition(String[] tableAttributes) {
 
-        String condition = command.split(" ")[4];
+        String condition = command.substring(command.indexOf("WHERE")+6);
+        System.out.println(condition);
 
         String column = null, operator = null, value = null;
 

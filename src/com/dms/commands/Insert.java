@@ -58,7 +58,7 @@ public class Insert {
         tableWriter = new CSVWriter(new FileWriter(tableCSV, true));
         StringBuilder tableRecord = new StringBuilder();
         for (String attribute : attributes) {
-            tableRecord.append(attribute).append(",");
+            tableRecord.append(attribute.trim()).append(",");
         }
 
         String[] tableRecords = tableRecord.toString().split(",");

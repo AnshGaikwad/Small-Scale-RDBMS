@@ -1,8 +1,6 @@
 package com.dms;
 
 import com.dms.commands.*;
-
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -42,9 +40,9 @@ public class Main {
                     System.out.println(">> " + numOfRowsAffected + " Rows Affected");
             } else if (command.contains("UPDATE")) {
                 Update update = new Update(command);
-                String updatedInTable = update.updateTable();
-                if (updatedInTable != null)
-                    System.out.println(">> Value updated from" + updatedInTable + " Successfully");
+                int numOfRowsAffected = update.updateTable();
+                if (numOfRowsAffected != -1)
+                    System.out.println(">> " + numOfRowsAffected + " Rows Affected");
             } else if (command.contains("SELECT")) {
                 Select select = new Select(command);
                 select.selectFromTable();
