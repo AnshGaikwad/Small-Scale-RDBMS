@@ -18,7 +18,7 @@ public class Delete {
         command = c;
     }
 
-    public String deleteFromTable() {
+    public int deleteFromTable() {
         String schemaCSV = "schema.csv";
         String tableName = command.split(" ")[2];
         String tableCSV = tableName + ".csv";
@@ -26,13 +26,13 @@ public class Delete {
         String[] tableAttributes = checkIfTableSchemaExists(schemaCSV, tableName);
         if (tableAttributes == null) {
             System.out.println("[!!] Invalid Table Name");
-            return null;
+            return 0;
         }
 
         boolean tableFileExists = checkIfTableFileExists(tableCSV);
         if (!tableFileExists) {
             System.out.println("[!!] Invalid Table Name");
-            return null;
+            return 0;
         }
 
         String[] condition = getCondition(tableAttributes);
@@ -41,11 +41,11 @@ public class Delete {
         int numOfRowsAffected = deletedFromTable(tableCSV, rowsAffected);
         if(numOfRowsAffected == 0) {
             System.out.println("[!!] Failed to delete values from Table");
-            return null;
+            return 0;
         }
 
 
-        return tableName;
+        return numOfRowsAffected;
     }
 
     private int deletedFromTable(String tableCSV, ArrayList<Integer> rowsAffected) {
@@ -53,8 +53,9 @@ public class Delete {
         try {
             CSVReader readerAll = new CSVReader(new FileReader(tableCSV));
             List<String[]> allElements = readerAll.readAll();
-            for(int ra : rowsAffected){
-                allElements.remove(ra);
+
+            for(int i = 0; i < rowsAffected.size(); i++){
+                allElements.remove(rowsAffected.get(i)-i);
             }
             CSVWriter writer = new CSVWriter(new FileWriter(tableCSV));
             writer.writeAll(allElements);
@@ -122,8 +123,10 @@ public class Delete {
             }
         }
 
+//        System.out.println(column.length()+" "+ operator.length() +" " + condition.length() + " " +  command.indexOf(";"));
+
         if(column != null && operator != null)
-            value = condition.substring(column.length()+operator.length(), command.indexOf(";"));
+            value = condition.substring(column.length()+operator.length(), condition.length()-1);
 
         return new String[]{column, operator, value};
     }

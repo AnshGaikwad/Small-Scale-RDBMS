@@ -4,12 +4,12 @@ import com.opencsv.CSVReader;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class OperatorUtil {
 
     CSVReader reader;
     int index, conditionVal;
-    ArrayList<Integer> rowsAffected = new ArrayList<>();
     public OperatorUtil (CSVReader r, int i, int c) {
         reader = r;
         index = i;
@@ -20,7 +20,7 @@ public class OperatorUtil {
         ArrayList<Integer> rowsAffected = new ArrayList<>();
 
         String[] nextLine;
-        for (int i = 0; (nextLine = reader.readNext()) != null; i++) {
+        for (int i = 1; (nextLine = reader.readNext()) != null; i++) {
             int tableVal;
             if(index != -1)
                 tableVal = Integer.parseInt(nextLine[index]);
@@ -35,8 +35,9 @@ public class OperatorUtil {
     }
 
     public ArrayList<Integer> moreThanEqualTo() throws IOException {
+        ArrayList<Integer> rowsAffected = new ArrayList<>();
         String[] nextLine;
-        for (int i = 0; (nextLine = reader.readNext()) != null; i++) {
+        for (int i = 1; (nextLine = reader.readNext()) != null; i++) {
             int tableVal;
             if(index != -1)
                 tableVal = Integer.parseInt(nextLine[index]);
@@ -50,8 +51,9 @@ public class OperatorUtil {
     }
 
     public ArrayList<Integer> notEqualTo() throws IOException {
+        ArrayList<Integer> rowsAffected = new ArrayList<>();
         String[] nextLine;
-        for (int i = 0; (nextLine = reader.readNext()) != null; i++) {
+        for (int i = 1; (nextLine = reader.readNext()) != null; i++) {
             int tableVal;
             if(index != -1)
                 tableVal = Integer.parseInt(nextLine[index]);
@@ -65,8 +67,9 @@ public class OperatorUtil {
     }
 
     public ArrayList<Integer> equalTo() throws IOException {
+        ArrayList<Integer> rowsAffected = new ArrayList<>();
         String[] nextLine;
-        for (int i = 0; (nextLine = reader.readNext()) != null; i++) {
+        for (int i = 1; (nextLine = reader.readNext()) != null; i++) {
             int tableVal;
             if(index != -1)
                 tableVal = Integer.parseInt(nextLine[index]);
@@ -81,8 +84,9 @@ public class OperatorUtil {
     }
 
     public ArrayList<Integer> lessThan() throws IOException {
+        ArrayList<Integer> rowsAffected = new ArrayList<>();
         String[] nextLine;
-        for (int i = 0; (nextLine = reader.readNext()) != null; i++) {
+        for (int i = 1; (nextLine = reader.readNext()) != null; i++) {
             int tableVal;
             if(index != -1)
                 tableVal = Integer.parseInt(nextLine[index]);
@@ -97,8 +101,9 @@ public class OperatorUtil {
     }
 
     public ArrayList<Integer> moreThan() throws IOException {
+        ArrayList<Integer> rowsAffected = new ArrayList<>();
         String[] nextLine;
-        for (int i = 0; (nextLine = reader.readNext()) != null; i++) {
+        for (int i = 1; (nextLine = reader.readNext()) != null; i++) {
             int tableVal;
             if(index != -1)
                 tableVal = Integer.parseInt(nextLine[index]);

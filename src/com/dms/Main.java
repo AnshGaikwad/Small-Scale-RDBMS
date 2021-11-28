@@ -2,6 +2,7 @@ package com.dms;
 
 import com.dms.commands.*;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -36,8 +37,8 @@ public class Main {
                     System.out.println(">> Tuple inserted inside " + insertedInTable + " Successfully");
             } else if (command.contains("DELETE")) {
                 Delete delete = new Delete(command);
-                String numOfRowsAffected = delete.deleteFromTable();
-                if (numOfRowsAffected != null)
+                int numOfRowsAffected = delete.deleteFromTable();
+                if (numOfRowsAffected != 0)
                     System.out.println(">> " + numOfRowsAffected + " Rows Affected");
             } else if (command.contains("UPDATE")) {
                 Update update = new Update(command);
