@@ -33,12 +33,12 @@ public class Main {
                 Insert insert = new Insert(command);
                 String insertedInTable = insert.insertInsideTable();
                 if (insertedInTable != null)
-                    System.out.println(">> Value inserted inside " + insertedInTable + " Successfully");
+                    System.out.println(">> Tuple inserted inside " + insertedInTable + " Successfully");
             } else if (command.contains("DELETE")) {
                 Delete delete = new Delete(command);
-                String deletedFromTable = delete.deleteFromTable();
-                if (deletedFromTable != null)
-                    System.out.println(">> Value deleted from " + deletedFromTable + " Successfully");
+                String numOfRowsAffected = delete.deleteFromTable();
+                if (numOfRowsAffected != null)
+                    System.out.println(">> " + numOfRowsAffected + " Rows Affected");
             } else if (command.contains("UPDATE")) {
                 Update update = new Update(command);
                 String updatedInTable = update.updateTable();
