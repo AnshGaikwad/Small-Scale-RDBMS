@@ -40,8 +40,9 @@ public class Update {
         ArrayList<Integer> rowsAffected = getRowsAffected(tableCSV, condition);
 
         String[] attributesAndValues = getAttributesAndValues();
+        ArrayList<Integer> columnsAffected = getColumnsAffected(attributesAndValues, tableAttributes);
 
-        boolean valuesUpdated = updateValuesInTable(tableCSV, tableAttributes, rowsAffected, attributesAndValues);
+        boolean valuesUpdated = updateValuesInTable(tableCSV, rowsAffected, columnsAffected, attributesAndValues);
         if(!valuesUpdated){
             System.out.println("[!!] Error Updating Values");
             return -1;
@@ -50,9 +51,56 @@ public class Update {
         return rowsAffected.size();
     }
 
-    private boolean updateValuesInTable(String tableCSV, String[] tableAttributes, ArrayList<Integer> rowsAffected, String[] attributesAndValues) {
+    private ArrayList<Integer> getColumnsAffected(String[] attributesAndValues, String[] tableAttributes) {
+
+        ArrayList<Integer> columnsAffected = new ArrayList<>();
+        for(int i = 1; i < tableAttributes.length; i+=2){
+            for (String aAV : attributesAndValues) {
+                if (aAV.contains(tableAttributes[i])) {
+                    columnsAffected.add(i/2);
+                    break;
+                }
+            }
+        }
+
+        return columnsAffected;
+
+    }
+
+    private boolean updateValuesInTable(String tableCSV, ArrayList<Integer> rowsAffected, ArrayList<Integer> columnsAffected, String[] attributesAndValues) {
+
+        boolean success = false;
+        for(int rA : rowsAffected){
+            for(int i = 0; i < attributesAndValues.length; i++){
+                String value = attributesAndValues[i].split("=")[1].trim();
+                try {
+                    success = updateCSV(tableCSV, value, rA, columnsAffected.get(i));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
 
+        return success;
+    }
+
+    public static boolean updateCSV(String tableCSV, String replace, int row, int col) throws IOException {
+
+        File inputFile = new File(tableCSV);
+
+        // Read existing file
+        CSVReader reader = new CSVReader(new FileReader(inputFile), ',');
+        List<String[]> csvBody = reader.readAll();
+        // get CSV row column  and replace with by using row and column
+        csvBody.get(row)[col] = replace;
+        reader.close();
+
+        // Write to CSV file which is open
+        CSVWriter writer = new CSVWriter(new FileWriter(inputFile), ',');
+        writer.writeAll(csvBody);
+        writer.flush();
+        writer.close();
 
         return true;
     }
