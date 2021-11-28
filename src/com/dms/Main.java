@@ -57,11 +57,11 @@ public class Main {
                     CSVReader reader;
                     try {
                         reader = new CSVReader(new FileReader(schemaCSV));
-                        System.out.println(Arrays.toString(reader.readNext()));
+//                        System.out.println("Reader : "+Arrays.toString(reader.readNext()));
                         //Read CSV line by line and use the string array as you want
                         String[] nextLine;
                         while ((nextLine = reader.readNext()) != null) {
-                            System.out.println(Arrays.toString(nextLine));
+                            System.out.println("Next Line : "+Arrays.toString(nextLine));
                             if(nextLine[0].equals(tableName)){
                                 System.out.println("[!!] Table exists already");
                                 tableExists = true;
