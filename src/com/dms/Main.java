@@ -1,6 +1,7 @@
 package com.dms;
 
 import com.dms.commands.Create;
+import com.dms.commands.Describe;
 import com.dms.commands.Drop;
 import com.dms.commands.Help;
 import com.opencsv.CSVReader;
@@ -37,26 +38,8 @@ public class Main {
                     System.out.println(">> " + droppedTable + " Table Dropped Successfully");
             }
 	        else if(command.contains("DESCRIBE")){
-                String tableName = command.split(" ")[1];
-                String schemaCSV = "schema.csv";
-                CSVReader reader;
-                try {
-                    reader = new CSVReader(new FileReader(schemaCSV));
-
-                    //Read CSV line by line and use the string array as you want
-                    String[] nextLine;
-                    while ((nextLine = reader.readNext()) != null) {
-                        if(nextLine[0].equals(tableName)){
-                            System.out.println(nextLine[0]);
-                            for(int i = 1; i < nextLine.length - 1; i+=2){
-                                System.out.println(nextLine[i] + " -- " + nextLine[i+1]);
-                            }
-                        }
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Describe describe = new Describe(command);
+                describe.describeTable();
             }else if(command.contains("HELP TABLES")){
                 // Get all table names
             }else if(command.contains("Quit")){
