@@ -22,24 +22,8 @@ public class Main {
 	        System.out.println("Command: " + command);
             command = command.toUpperCase(Locale.ROOT);
             if(command.contains("HELP")){
-                Help help = new Help();
-                if(command.contains("CREATE TABLE")){
-                    help.createCommand();
-                }else if(command.contains("DROP TABLE")){
-                    help.dropCommand();
-                }else if(command.contains("DESCRIBE")){
-                    help.describeCommand();
-                }else if(command.contains("SELECT")){
-                    help.selectCommand();
-                }else if(command.contains("INSERT")){
-                    help.insertCommand();
-                }else if(command.contains("DELETE")){
-                    help.deleteCommand();
-                }else if(command.contains("UPDATE")){
-                    help.updateCommand();
-                }else{
-                    System.out.println("Command doesn't exists");
-                }
+                Help help = new Help(command);
+                help.executeHelp();
             }else if(command.contains("CREATE TABLE")){
                 Create create = new Create(command);
 	            String createdTable = create.createTable();
@@ -47,46 +31,7 @@ public class Main {
                     System.out.println(">> " + createdTable + " Table Created Successfully");
             }
 	        else if(command.contains("DROP TABLE")){
-                String schemaCSV = "schema.csv";
-                String tableName = command.split(" ")[2];
-                String tableCSV = tableName + ".csv";
 
-                CSVReader reader, reader2;
-                try {
-                    reader = new CSVReader(new FileReader(schemaCSV));
-                    reader2 = new CSVReader(new FileReader(schemaCSV));
-                    List<String[]> allElements = reader2.readAll();
-
-                    //Read CSV line by line and use the string array as you want
-                    String[] nextLine;
-                    int rowNumber = 0;
-                    while ((nextLine = reader.readNext()) != null) {
-                        System.out.println(tableName);
-                        System.out.println(nextLine[0]);
-                        System.out.println(rowNumber);
-                        if (nextLine[0].equals(tableName)) {
-                            System.out.println(rowNumber);
-                            allElements.remove(rowNumber);
-                            System.out.println(">> Table exists!");
-                            break;
-                        }
-                        rowNumber++;
-                    }
-
-                    File file = new File(tableCSV);
-                    if (file.delete()) {
-                        System.out.println(">> File deleted successfully");
-                    } else {
-                        System.out.println("[!!] Failed to delete the file");
-                    }
-
-                    CSVWriter writer = new CSVWriter(new FileWriter(schemaCSV));
-                    writer.writeAll(allElements);
-                    writer.close();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
 	        else if(command.contains("DESCRIBE")){
                 String tableName = command.split(" ")[1];

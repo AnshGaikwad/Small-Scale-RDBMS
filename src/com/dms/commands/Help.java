@@ -2,6 +2,31 @@ package com.dms.commands;
 
 public class Help {
 
+    String command;
+    public Help (String c){
+        command = c;
+    }
+
+    public void executeHelp(){
+        if(command.contains("CREATE TABLE")){
+            createCommand();
+        }else if(command.contains("DROP TABLE")){
+            dropCommand();
+        }else if(command.contains("DESCRIBE")){
+            describeCommand();
+        }else if(command.contains("SELECT")){
+            selectCommand();
+        }else if(command.contains("INSERT")){
+            insertCommand();
+        }else if(command.contains("DELETE")){
+            deleteCommand();
+        }else if(command.contains("UPDATE")){
+            updateCommand();
+        }else{
+            System.out.println("Command doesn't exists");
+        }
+    }
+
     private void command (String syntax, String description, String output) {
         System.out.println("Syntax:");
         System.out.println(syntax);
@@ -11,7 +36,7 @@ public class Help {
         System.out.println(output);
     }
 
-    public void createCommand () {
+    private void createCommand () {
         String syntax = "CREATE TABLE table_name ( attribute_1 attribute1_type CHECK (constraint1),\\n\" +\n" +
                 "                            \"attribute_2 attribute2_type, …, PRIMARY KEY ( attribute_1, attribute_2 ),\\n\" +\n" +
                 "                            \"FOREIGN KEY ( attribute_y ) REFERENCES table_x ( attribute_t ), FOREIGN\\n\" +\n" +
@@ -33,7 +58,7 @@ public class Help {
         command(syntax, description, output);
     }
 
-    public void dropCommand () {
+    private void dropCommand () {
         String syntax = "DROP TABLE table_name;";
         String description = "The “DROP TABLE” token is followed by a table name";
         String output = "The output is “Table dropped successfully” if table dropping succeeds, and a\\n\" +\n" +
@@ -41,7 +66,7 @@ public class Help {
         command(syntax, description, output);
     }
 
-    public void describeCommand () {
+    private void describeCommand () {
         String syntax = "DESCRIBE table_name;";
         String description = "The token “DESCRIBE” is followed by a table name.\\n\" +\n" +
                 "                            \"The output should be the list of attribute names and types in the table and a list of any\\n\" +\n" +
@@ -57,7 +82,7 @@ public class Help {
         command(syntax, description, output);
     }
 
-    public void selectCommand () {
+    private void selectCommand () {
         String syntax = "SELECT attribute_list FROM table_list WHERE condition_list;";
         String description = "The token “SELECT” is followed by an attribute list, followed by the token “FROM”\\n\" +\n" +
                 "                            \"and a table name list. This is followed by an optional “WHERE” keyword and\\n\" +\n" +
@@ -88,7 +113,7 @@ public class Help {
         command(syntax, description, output);
     }
 
-    public void insertCommand () {
+    private void insertCommand () {
         String syntax = "INSERT INTO table_name VALUES ( val1, val2, … );";
         String description = "The “INSERT INTO” token is followed by a table name, followed by the token\\n\" +\n" +
                 "                            \"“VALUES” and a list of values separated by commas enclosed in parentheses. Each\\n\" +\n" +
@@ -104,7 +129,7 @@ public class Help {
         command(syntax, description, output);
     }
 
-    public void deleteCommand () {
+    private void deleteCommand () {
         String syntax = "DELETE FROM table_name WHERE condition_list;";
         String description = "The “DELETE FROM” token is followed by a table name, followed by the optional\\n\" +\n" +
                 "                            \"“WHERE” keyword and a condition list. The condition list has the following format:\\n\" +\n" +
@@ -122,7 +147,7 @@ public class Help {
         command(syntax, description, output);
     }
 
-    public void updateCommand () {
+    private void updateCommand () {
         String syntax = "UPDATE table_name SET attr1 = val1, attr2 = val2… WHERE condition_list;";
         String description = "The “UPDATE” token is followed by a table name, which is followed by the token\\n\" +\n" +
                 "                            \"“SET” and a list of attribute name=attribute value pairs separated by commas. This is\\n\" +\n" +
