@@ -26,26 +26,19 @@ public class Delete {
         String[] tableAttributes = checkIfTableSchemaExists(schemaCSV, tableName);
         if (tableAttributes == null) {
             System.out.println("[!!] Invalid Table Name");
-            return 0;
+            return -1;
         }
 
         boolean tableFileExists = checkIfTableFileExists(tableCSV);
         if (!tableFileExists) {
             System.out.println("[!!] Invalid Table Name");
-            return 0;
+            return -1;
         }
 
         String[] condition = getCondition(tableAttributes);
-
         ArrayList<Integer> rowsAffected = getRowsAffected(tableCSV, condition);
-        int numOfRowsAffected = deletedFromTable(tableCSV, rowsAffected);
-        if(numOfRowsAffected == 0) {
-            System.out.println("[!!] Failed to delete values from Table");
-            return 0;
-        }
 
-
-        return numOfRowsAffected;
+        return deletedFromTable(tableCSV, rowsAffected);
     }
 
     private int deletedFromTable(String tableCSV, ArrayList<Integer> rowsAffected) {

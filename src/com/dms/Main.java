@@ -38,7 +38,7 @@ public class Main {
             } else if (command.contains("DELETE")) {
                 Delete delete = new Delete(command);
                 int numOfRowsAffected = delete.deleteFromTable();
-                if (numOfRowsAffected != 0)
+                if(numOfRowsAffected != -1)
                     System.out.println(">> " + numOfRowsAffected + " Rows Affected");
             } else if (command.contains("UPDATE")) {
                 Update update = new Update(command);
