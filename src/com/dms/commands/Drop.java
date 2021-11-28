@@ -10,11 +10,12 @@ import java.util.List;
 public class Drop {
 
     String command;
-    public Drop (String c){
+
+    public Drop(String c) {
         command = c;
     }
 
-    public String dropTable(){
+    public String dropTable() {
         String schemaCSV = "schema.csv";
         String tableName = command.split(" ")[2];
         String tableCSV = tableName + ".csv";
@@ -22,19 +23,19 @@ public class Drop {
         try {
 
             List<String[]> allElements = getTable(schemaCSV, tableName);
-            if(allElements == null){
+            if (allElements == null) {
                 System.out.println("[!!] Table Doesn't Exists");
                 return null;
             }
 
             boolean deleteFileSuccess = deleteTableCSV(tableCSV);
-            if(!deleteFileSuccess){
+            if (!deleteFileSuccess) {
                 System.out.println("[!!] Failed to delete the file");
                 return null;
             }
 
             boolean schemeDataChange = deleteRowFromSchema(schemaCSV, allElements);
-            if(!schemeDataChange){
+            if (!schemeDataChange) {
                 System.out.println("[!!] Failed to change schema file");
                 return null;
             }

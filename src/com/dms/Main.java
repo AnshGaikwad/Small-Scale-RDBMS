@@ -1,65 +1,56 @@
 package com.dms;
 
 import com.dms.commands.*;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
 
-import java.io.*;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
-	    Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
 
-	    while(true){
-	        System.out.print("> ");
-	        String command = sc.nextLine();
-	        System.out.println("Command: " + command);
-            if(command.contains("HELP")){
+        while (true) {
+            System.out.print("> ");
+            String command = sc.nextLine();
+            System.out.println("Command: " + command);
+            if (command.contains("HELP")) {
                 Help help = new Help(command);
                 help.executeHelp();
-            }else if(command.contains("CREATE TABLE")){
+            } else if (command.contains("CREATE TABLE")) {
                 Create create = new Create(command);
-	            String createdTable = create.createTable();
-                if(createdTable != null)
+                String createdTable = create.createTable();
+                if (createdTable != null)
                     System.out.println(">> " + createdTable + " Table Created Successfully");
-            }
-	        else if(command.contains("DROP TABLE")){
+            } else if (command.contains("DROP TABLE")) {
                 Drop drop = new Drop(command);
                 String droppedTable = drop.dropTable();
-                if(droppedTable != null)
+                if (droppedTable != null)
                     System.out.println(">> " + droppedTable + " Table Dropped Successfully");
-            }
-	        else if(command.contains("DESCRIBE")){
+            } else if (command.contains("DESCRIBE")) {
                 Describe describe = new Describe(command);
                 describe.describeTable();
-            }else if(command.contains("INSERT")){
+            } else if (command.contains("INSERT")) {
                 Insert insert = new Insert(command);
                 String insertedInTable = insert.insertInsideTable();
-                if(insertedInTable != null)
+                if (insertedInTable != null)
                     System.out.println(">> Value inserted inside" + insertedInTable + " Successfully");
-            }else if(command.contains("DELETE")){
+            } else if (command.contains("DELETE")) {
                 Delete delete = new Delete(command);
                 String deletedFromTable = delete.deleteFromTable();
-                if(deletedFromTable != null)
+                if (deletedFromTable != null)
                     System.out.println(">> Value deleted from " + deletedFromTable + " Successfully");
-            }else if(command.contains("UPDATE")){
+            } else if (command.contains("UPDATE")) {
                 Update update = new Update(command);
                 String updatedInTable = update.updateTable();
-                if(updatedInTable != null)
+                if (updatedInTable != null)
                     System.out.println(">> Value updated from" + updatedInTable + " Successfully");
-            }else if(command.contains("SELECT")){
+            } else if (command.contains("SELECT")) {
                 Select select = new Select(command);
                 select.selectFromTable();
-            }
-            else if(command.contains("Quit")){
-	            break;
-            }else{
-	            System.out.println("[!!] Invalid Input");
+            } else if (command.contains("Quit")) {
+                break;
+            } else {
+                System.out.println("[!!] Invalid Input");
             }
         }
     }

@@ -2,11 +2,12 @@ package com.dms.commands;
 
 public class Delete {
     String command;
-    public Delete (String c){
+
+    public Delete(String c) {
         command = c;
     }
 
-    public String deleteFromTable(){
+    public String deleteFromTable() {
         String schemaCSV = "schema.csv";
         String tableName = command.split(" ")[2];
         String tableCSV = tableName + ".csv";

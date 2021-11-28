@@ -11,11 +11,12 @@ import java.io.IOException;
 public class Create {
 
     String command;
-    public Create (String c){
+
+    public Create(String c) {
         command = c;
     }
 
-    private boolean checkIfTableExists(String schemaCSV, String tableName){
+    private boolean checkIfTableExists(String schemaCSV, String tableName) {
         File schemaFile = new File(schemaCSV);
 
         // Checking if the specified file exists or not
@@ -27,21 +28,21 @@ public class Create {
                 //Read CSV line by line and use the string array as you want
                 String[] nextLine;
                 while ((nextLine = reader.readNext()) != null) {
-                    if(nextLine[0].equals(tableName)){
+                    if (nextLine[0].equals(tableName)) {
                         return true;
                     }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             try {
                 File file = new File(schemaCSV);
                 boolean result = file.createNewFile();
-                if(!result){
+                if (!result) {
                     System.out.println("[!!] Error creating new File");
                 }
-            } catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -49,7 +50,7 @@ public class Create {
         return false;
     }
 
-    private boolean appendAttributes(String schemaCSV, String tableName){
+    private boolean appendAttributes(String schemaCSV, String tableName) {
 
         CSVWriter tableWriter, schemaWriter;
 
@@ -63,9 +64,9 @@ public class Create {
             schemaWriter = new CSVWriter(new FileWriter(schemaCSV, true));
             StringBuilder schemaRecord = new StringBuilder((tableName + ","));
             StringBuilder tableRecord = new StringBuilder();
-            for(int i = 0; i < attributes.length; i++){
+            for (int i = 0; i < attributes.length; i++) {
                 schemaRecord.append(attributes[i]);
-                if(i%2 == 0){
+                if (i % 2 == 0) {
                     tableRecord.append(attributes[i]).append(",");
                     schemaRecord.append(",");
                 }
@@ -85,18 +86,18 @@ public class Create {
         return true;
     }
 
-    public String createTable(){
+    public String createTable() {
         String tableName = command.split(" ")[2];
         String schemaCSV = "schema.csv";
 
         boolean tableExists = checkIfTableExists(schemaCSV, tableName);
-        if(tableExists){
+        if (tableExists) {
             System.out.println("[!!] Table exists already");
             return null;
         }
 
         boolean appendAttributesDone = appendAttributes(schemaCSV, tableName);
-        if(!appendAttributesDone){
+        if (!appendAttributesDone) {
             System.out.println("[!!] Attributes aren't updated");
             return null;
         }
