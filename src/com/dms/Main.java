@@ -33,7 +33,7 @@ public class Main {
                 Insert insert = new Insert(command);
                 String insertedInTable = insert.insertInsideTable();
                 if (insertedInTable != null)
-                    System.out.println(">> Value inserted inside" + insertedInTable + " Successfully");
+                    System.out.println(">> Value inserted inside " + insertedInTable + " Successfully");
             } else if (command.contains("DELETE")) {
                 Delete delete = new Delete(command);
                 String deletedFromTable = delete.deleteFromTable();
