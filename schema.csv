@@ -1,2 +1,2 @@
 "Students","id","INT","name","STR","dept","STR"
-"Dept","id","INT","name","STR","dept","STR"
+"Depts","name","STR","office","STR"

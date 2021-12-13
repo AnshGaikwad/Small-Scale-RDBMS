@@ -21,6 +21,8 @@ public class Insert {
         String tableName = command.split(" ")[2];
         String tableCSV = tableName + ".csv";
 
+
+        // checks schema
         String[] tableAttributes = checkIfTableSchemaExists(schemaCSV, tableName);
         if (tableAttributes == null) {
             System.out.println("[!!] Invalid Table Name");
