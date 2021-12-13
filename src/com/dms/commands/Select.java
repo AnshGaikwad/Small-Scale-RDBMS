@@ -44,16 +44,13 @@ public class Select {
 
             String[] condition = getCondition(tableAttributes);
             ArrayList<Integer> rowsAffected = getRowsAffected(tableCSV, condition);
-
             ArrayList<Integer> columnsAffected = getColumnsAffected(columns, tableAttributes);
+
             boolean valuesSelected = selectTable(tableCSV, rowsAffected, columnsAffected, columns);
             if(!valuesSelected){
                 System.out.println("[!!] Error Selecting Values");
                 return;
             }
-
-
-
         }
     }
 
