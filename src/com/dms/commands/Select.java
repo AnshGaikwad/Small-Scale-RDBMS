@@ -21,7 +21,8 @@ public class Select {
     public void selectFromTable() {
         String schemaCSV = "schema.csv";
         String tableNames = command.substring(command.indexOf("FROM")+5);
-        tableNames = tableNames.substring(0, tableNames.indexOf("WHERE")-1);
+        if(command.contains("WHERE"))
+            tableNames = tableNames.substring(0, tableNames.indexOf("WHERE")-1);
         String columnList = command.substring(command.indexOf("SELECT")+7);
         columnList = columnList.substring(0, columnList.indexOf("FROM")-1);
         String[] tables = tableNames.split(",");
@@ -44,6 +45,11 @@ public class Select {
             String[] condition = getCondition(tableAttributes).split("-");
             ArrayList<Integer> rowsAffected = getRowsAffected(tableCSV, condition);
             ArrayList<Integer> columnsAffected = getColumnsAffected(columns, tableAttributes);
+
+            if(rowsAffected.size() == 0){
+                System.out.println("Nothing Selected");
+                return;
+            }
 
             boolean valuesSelected = selectTable(tableCSV, rowsAffected, columnsAffected, columns);
             if(!valuesSelected){
@@ -274,7 +280,7 @@ public class Select {
 
     private String getCondition(String[] tableAttributes) {
 
-        String condition = command.substring(command.indexOf("WHERE")+6);
+        String condition = command.substring(command.indexOf("WHERE")+6).replaceAll("\\s", "");;
 
         if(condition.contains("AND") || condition.contains("OR")){
 

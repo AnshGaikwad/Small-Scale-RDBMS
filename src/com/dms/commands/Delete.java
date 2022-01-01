@@ -193,7 +193,7 @@ public class Delete {
 
     private String getCondition(String[] tableAttributes) {
 
-        String condition = command.substring(command.indexOf("WHERE")+6);
+        String condition = command.substring(command.indexOf("WHERE")+6).replaceAll("\\s", "");;
 
         if(condition.contains("AND") || condition.contains("OR")){
 
