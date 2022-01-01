@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,7 +37,8 @@ public class Delete {
             return -1;
         }
 
-        String[] condition = getCondition(tableAttributes);
+        String[] condition = getCondition(tableAttributes).split("-");
+        System.out.println(Arrays.toString(condition));
         ArrayList<Integer> rowsAffected = getRowsAffected(tableCSV, condition);
 
         return deletedFromTable(tableCSV, rowsAffected);
@@ -112,35 +114,85 @@ public class Delete {
         return rowsAffected;
     }
 
-    private String[] getCondition(String[] tableAttributes) {
-
-
+    private String getCondition(String[] tableAttributes) {
 
         String condition = command.substring(command.indexOf("WHERE")+6);
+        String condition1, condition2;
 
-        String column = null, operator = null, value = null;
+        if(condition.contains("AND") || condition.contains("OR")){
 
-        String[] operators = {"<=", ">=", "!=", "=", "<", ">"};
+            StringBuilder sb = new StringBuilder();
 
-        for(int i = 1; i < tableAttributes.length; i++){
-            if(command.contains(tableAttributes[i])){
-                column = tableAttributes[i];
-                break;
+            if(condition.contains("AND")){
+                sb.append("AND").append("-");
+            }else if(condition.contains("OR")){
+                sb.append("OR").append("-");
             }
-        }
 
-        for(String o : operators){
-            if(command.contains(o)){
-                operator = o;
-                break;
+            String conditionsBuilder = command.substring(command.indexOf("WHERE") + 6, command.indexOf("AND") - 1) + "-" +
+                    command.substring(command.indexOf("AND") + 4);
+            String[] conditions = conditionsBuilder.split("-");
+
+            for(int i = 0; i < 2; i++){
+                String column = null, operator = null, value = null;
+
+                String[] operators = {"<=", ">=", "!=", "=", "<", ">"};
+
+                for(int t = 1; t < tableAttributes.length; t++){
+                    if(conditions[i].contains(tableAttributes[t])){
+                        column = tableAttributes[t];
+                        break;
+                    }
+                }
+
+                for(String o : operators){
+                    if(conditions[i].contains(o)){
+                        operator = o;
+                        break;
+                    }
+                }
+
+                if(column != null && operator != null)
+                    value = conditions[i].substring(column.length()+operator.length());
+
+                sb.append(column).append("-");
+                sb.append(operator).append("-");
+                sb.append(value).append("-");
             }
+
+            return sb.toString();
+
+        }else{
+
+            StringBuilder sb = new StringBuilder();
+
+            String column = null, operator = null, value = null;
+
+            String[] operators = {"<=", ">=", "!=", "=", "<", ">"};
+
+            for(int i = 1; i < tableAttributes.length; i++){
+                if(condition.contains(tableAttributes[i])){
+                    column = tableAttributes[i];
+                    break;
+                }
+            }
+
+            for(String o : operators){
+                if(condition.contains(o)){
+                    operator = o;
+                    break;
+                }
+            }
+
+            if(column != null && operator != null)
+                value = condition.substring(column.length()+operator.length());
+
+            sb.append(column + "-");
+            sb.append(operator + "-");
+            sb.append(value + "-");
+
+            return sb.toString();
         }
-
-        if(column != null && operator != null)
-            value = condition.substring(column.length()+operator.length());
-
-
-        return new String[]{column, operator, value};
     }
 
     private boolean checkIfTableFileExists(String tableCSV) {
