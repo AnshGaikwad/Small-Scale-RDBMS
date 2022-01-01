@@ -5,7 +5,53 @@
 5. Describe Table (Table not found error) => DESCRIBE students
 6. Describe Table => DESCRIBE Students
 7. Insert in table => INSERT INTO Students VALUES (1, Aka, CS)
-7. Insert in table => INSERT INTO Students VALUES (2, Amol, CS)
-7. Insert in table (Table not found error) => INSERT INTO Stud VALUES (2, Amol, CS)
-7. Insert in table => INSERT INTO Students VALUES (3, Ansh, CS)
-7. Insert in table => INSERT INTO Students VALUES (4, Yath, CS)
+8. Insert in table => INSERT INTO Students VALUES (2, Amol, CS)
+9. Insert in table (Table not found error) => INSERT INTO Stud VALUES (2, Amol, CS)
+10. Insert in table => INSERT INTO Students VALUES (3, Ansh, CS)
+11. Insert in table (Invalid number of values) => INSERT INTO Students VALUES (3, Ansh, CS)
+12. Insert in table => INSERT INTO Students VALUES (4, Yath, CS)
+Note => As we are dealing with strings int isn't been checked.
+13. Delete id >= 3 => DELETE FROM Students WHERE id>=3
+14. Delete name = Aka =>  DELETE FROM Students WHERE name=Aka
+15. Add a ENTC student => INSERT INTO Students VALUES (5, Temp, ENTC)
+16. Keep only CS students => DELETE FROM Students WHERE dept!=CS
+17. Invalid operator Error => DELETE FROM name>Ansh
+17. Delete all values (Invalid Table name) => DELETE FROM Stud
+18. Delete all values => DELETE FROM Students
+19. Insert the Table Again
+
+INSERT INTO Students VALUES (1, Aka, CS)
+INSERT INTO Students VALUES (2, Amol, CS)
+INSERT INTO Students VALUES (3, Ansh, CS)
+INSERT INTO Students VALUES (4, Yath, CS)
+
+20. Use OR for delete => DELETE FROM Students WHERE id=1 OR name=Yath
+21. Use AND for delete => DELETE FROM Students WHERE id=3 AND name=Ansh
+22. Use invalid operator => DELETE FROM Students WHERE id=1 OR name>Yath
+23. Use invalid operator with AND => DELETE FROM Students WHERE id=3 OR name>Yath
+
+24. Insert the Table Again
+
+INSERT INTO Students VALUES (1, Aka, CS)
+INSERT INTO Students VALUES (2, Amol, CS)
+INSERT INTO Students VALUES (3, Ansh, CS)
+INSERT INTO Students VALUES (4, Yath, CS)
+
+25. Update name by using id => UPDATE Students SET name=Akanksha = WHERE id=1;
+26. Update name by using name => UPDATE Students SET name=Yatharth WHERE name=Yath;
+27. Same error checkings shown above applicable here too. (Table name, etc.)
+28. Change dept to ENTC => UPDATE Students SET dept=ENTC WHERE id=1 OR name=Ansh
+29. Change Ansh's dept to CS back (Not the right command) => UPDATE Students SET dept=CS WHERE id=3 AND name=Yatharth
+30. Change Ansh's dept to CS back => UPDATE Students SET dept=CS WHERE id=3 AND name=Ansh
+31. Change Aka's dept to CS back => UPDATE Students SET dept=CS WHERE name=Akanksha AND dept!=CS
+32. Change name to Amol without Where clause => UPDATE Students SET name=Amol
+
+33. Reverting back the changes =>
+
+DELETE FROM Students
+INSERT INTO Students VALUES (1, Aka, CS)
+INSERT INTO Students VALUES (2, Amol, CS)
+INSERT INTO Students VALUES (3, Ansh, CS)
+INSERT INTO Students VALUES (4, Yath, CS)
+
+

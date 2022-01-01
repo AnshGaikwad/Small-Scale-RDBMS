@@ -112,7 +112,10 @@ public class Update {
 
     private String[] getAttributesAndValues() {
         String attributesAndValuesAll = command.substring(command.indexOf("SET")+4);
-        attributesAndValuesAll = attributesAndValuesAll.substring(0, attributesAndValuesAll.indexOf("WHERE") -1);
+        if(command.contains("WHERE"))
+            attributesAndValuesAll = attributesAndValuesAll.substring(0, attributesAndValuesAll.indexOf("WHERE") -1);
+        else
+            attributesAndValuesAll = attributesAndValuesAll.substring(0, attributesAndValuesAll.length());
 
         return attributesAndValuesAll.split(",");
     }
@@ -169,7 +172,6 @@ public class Update {
                         case "=" -> rowsCanBeAffected.add(new ArrayList<>(operatorUtil.equalTo()));
                         case "<" -> rowsCanBeAffected.add(new ArrayList<>(operatorUtil.lessThan()));
                         case ">" -> rowsCanBeAffected.add(new ArrayList<>(operatorUtil.moreThan()));
-                        default -> System.out.println("Easter Egg here");
                     }
 
                 } catch (IOException e) {

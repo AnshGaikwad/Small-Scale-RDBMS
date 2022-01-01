@@ -38,7 +38,6 @@ public class Delete {
         }
 
         String[] condition = getCondition(tableAttributes).split("-");
-        System.out.println(Arrays.toString(condition));
         ArrayList<Integer> rowsAffected = getRowsAffected(tableCSV, condition);
 
         return deletedFromTable(tableCSV, rowsAffected);
@@ -115,7 +114,6 @@ public class Delete {
                         case "=" -> rowsCanBeAffected.add(new ArrayList<>(operatorUtil.equalTo()));
                         case "<" -> rowsCanBeAffected.add(new ArrayList<>(operatorUtil.lessThan()));
                         case ">" -> rowsCanBeAffected.add(new ArrayList<>(operatorUtil.moreThan()));
-                        default -> System.out.println("Easter Egg here");
                     }
 
                 } catch (IOException e) {
@@ -183,7 +181,6 @@ public class Delete {
                     case "=" -> rowsAffected = operatorUtil.equalTo();
                     case "<" -> rowsAffected = operatorUtil.lessThan();
                     case ">" -> rowsAffected = operatorUtil.moreThan();
-                    default -> System.out.println("Easter Egg here");
                 }
             } catch (IOException e) {
                 e.printStackTrace();

@@ -5,12 +5,14 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
         Scanner sc = new Scanner(System.in);
 
         while (true) {
             System.out.print("> ");
             String command = sc.nextLine();
+
+//            try {
             if (command.contains("HELP")) {
                 Help help = new Help(command);
                 help.executeHelp();
@@ -37,7 +39,7 @@ public class Main {
                 int numOfRowsAffected = delete.deleteFromTable();
                 if (numOfRowsAffected == 1)
                     System.out.println(">> " + numOfRowsAffected + " Row Affected");
-                else if(numOfRowsAffected != -1)
+                else if (numOfRowsAffected != -1)
                     System.out.println(">> " + numOfRowsAffected + " Rows Affected");
             } else if (command.contains("UPDATE")) {
                 Update update = new Update(command);
@@ -54,6 +56,9 @@ public class Main {
             } else {
                 System.out.println("[!!] Invalid Input");
             }
+//            catch (Exception e){
+//                System.out.println("[!!] Unable to process Command");
+//            }
+        }
         }
     }
-}
