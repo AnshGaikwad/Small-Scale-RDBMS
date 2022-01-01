@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Delete {
     String command;
@@ -66,8 +67,19 @@ public class Delete {
         String column = condition[0], operator = condition[1], value = condition[2];
         int index = -1;
         ArrayList<Integer> rowsAffected = new ArrayList<>();
+
         try {
             CSVReader reader = new CSVReader(new FileReader(tableCSV));
+
+
+            if(!command.contains("WHERE")){
+                String[] nextLine = reader.readNext();
+                for (int i = 1; (nextLine = reader.readNext()) != null; i++){
+                    rowsAffected.add(i);
+                }
+                return rowsAffected;
+            }
+
             String[] attributes = reader.readNext();
 
             for(int i = 0; i < attributes.length; i++){
@@ -76,8 +88,14 @@ public class Delete {
                 }
             }
 
-            int conditionVal = Integer.parseInt(value);
-            OperatorUtil operatorUtil = new OperatorUtil(reader, index, conditionVal);
+            int conditionVal = -1;
+            try{
+                conditionVal = Integer.parseInt(value);
+            }catch (NumberFormatException ignored){
+
+            }
+
+            OperatorUtil operatorUtil = new OperatorUtil(reader, index, conditionVal, value);
             switch (operator) {
                 case "<=" -> rowsAffected = operatorUtil.lessThanEqualTo();
                 case ">=" -> rowsAffected = operatorUtil.moreThanEqualTo();
@@ -96,8 +114,9 @@ public class Delete {
 
     private String[] getCondition(String[] tableAttributes) {
 
+
+
         String condition = command.substring(command.indexOf("WHERE")+6);
-        System.out.println(condition);
 
         String column = null, operator = null, value = null;
 
@@ -117,10 +136,9 @@ public class Delete {
             }
         }
 
-//        System.out.println(column.length()+" "+ operator.length() +" " + condition.length() + " " +  command.indexOf(";"));
-
         if(column != null && operator != null)
-            value = condition.substring(column.length()+operator.length(), condition.length()-1);
+            value = condition.substring(column.length()+operator.length());
+
 
         return new String[]{column, operator, value};
     }

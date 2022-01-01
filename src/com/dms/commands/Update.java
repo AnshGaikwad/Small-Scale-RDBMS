@@ -129,7 +129,7 @@ public class Update {
             }
 
             int conditionVal = Integer.parseInt(value);
-            OperatorUtil operatorUtil = new OperatorUtil(reader, index, conditionVal);
+            OperatorUtil operatorUtil = new OperatorUtil(reader, index, conditionVal, value);
             switch (operator) {
                 case "<=" -> rowsAffected = operatorUtil.lessThanEqualTo();
                 case ">=" -> rowsAffected = operatorUtil.moreThanEqualTo();

@@ -35,12 +35,16 @@ public class Main {
             } else if (command.contains("DELETE")) {
                 Delete delete = new Delete(command);
                 int numOfRowsAffected = delete.deleteFromTable();
-                if(numOfRowsAffected != -1)
+                if (numOfRowsAffected == 1)
+                    System.out.println(">> " + numOfRowsAffected + " Row Affected");
+                else if(numOfRowsAffected != -1)
                     System.out.println(">> " + numOfRowsAffected + " Rows Affected");
             } else if (command.contains("UPDATE")) {
                 Update update = new Update(command);
                 int numOfRowsAffected = update.updateTable();
-                if (numOfRowsAffected != -1)
+                if (numOfRowsAffected == 1)
+                    System.out.println(">> " + numOfRowsAffected + " Row Affected");
+                else if (numOfRowsAffected != -1)
                     System.out.println(">> " + numOfRowsAffected + " Rows Affected");
             } else if (command.contains("SELECT")) {
                 Select select = new Select(command);
