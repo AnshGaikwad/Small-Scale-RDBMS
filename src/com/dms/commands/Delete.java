@@ -127,7 +127,7 @@ public class Delete {
 
             ArrayList<Integer> rowsAffected1 = new ArrayList<>(rowsCanBeAffected.get(0));
             ArrayList<Integer> rowsAffected2 = new ArrayList<>(rowsCanBeAffected.get(1));
-            System.out.println(rowsAffected1 + " " + rowsAffected2);
+
             if(Objects.equals(logicalOperator, "AND")){
                 rowsAffected1.retainAll(rowsAffected2);
                 return rowsAffected1;
@@ -197,7 +197,6 @@ public class Delete {
     private String getCondition(String[] tableAttributes) {
 
         String condition = command.substring(command.indexOf("WHERE")+6);
-        String condition1, condition2;
 
         if(condition.contains("AND") || condition.contains("OR")){
 
@@ -273,9 +272,9 @@ public class Delete {
             if(column != null && operator != null)
                 value = condition.substring(column.length()+operator.length());
 
-            sb.append(column + "-");
-            sb.append(operator + "-");
-            sb.append(value + "-");
+            sb.append(column).append("-");
+            sb.append(operator).append("-");
+            sb.append(value).append("-");
 
             return sb.toString();
         }
