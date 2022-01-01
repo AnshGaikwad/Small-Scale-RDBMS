@@ -11,7 +11,6 @@ public class Main {
         while (true) {
             System.out.print("> ");
             String command = sc.nextLine();
-            System.out.println("Command: " + command);
             if (command.contains("HELP")) {
                 Help help = new Help(command);
                 help.executeHelp();

@@ -25,13 +25,13 @@ public class Insert {
         // checks schema
         String[] tableAttributes = checkIfTableSchemaExists(schemaCSV, tableName);
         if (tableAttributes == null) {
-            System.out.println("[!!] Invalid Table Name");
+            System.out.println("[!!] Table doesn't exists");
             return null;
         }
 
         boolean tableFileExists = checkIfTableFileExists(tableCSV);
         if (!tableFileExists) {
-            System.out.println("[!!] Invalid Table Name");
+            System.out.println("[!!] Table doesn't exists");
             return null;
         }
 

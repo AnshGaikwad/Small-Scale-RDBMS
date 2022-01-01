@@ -1,0 +1,11 @@
+1. Create Table => CREATE TABLE Students (id INT, name STR, dept STR)
+2. Drop Table (Table not found error) => DROP TABLE Stud
+3. Drop Table => DROP TABLE Students
+4. Create Table again => CREATE TABLE Students (id INT, name STR, dept STR)
+5. Describe Table (Table not found error) => DESCRIBE students
+6. Describe Table => DESCRIBE Students
+7. Insert in table => INSERT INTO Students VALUES (1, Aka, CS)
+7. Insert in table => INSERT INTO Students VALUES (2, Amol, CS)
+7. Insert in table (Table not found error) => INSERT INTO Stud VALUES (2, Amol, CS)
+7. Insert in table => INSERT INTO Students VALUES (3, Ansh, CS)
+7. Insert in table => INSERT INTO Students VALUES (4, Yath, CS)
