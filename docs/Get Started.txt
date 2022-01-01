@@ -37,8 +37,8 @@ INSERT INTO Students VALUES (2, Amol, CS)
 INSERT INTO Students VALUES (3, Ansh, CS)
 INSERT INTO Students VALUES (4, Yath, CS)
 
-25. Update name by using id => UPDATE Students SET name=Akanksha = WHERE id=1;
-26. Update name by using name => UPDATE Students SET name=Yatharth WHERE name=Yath;
+25. Update name by using id => UPDATE Students SET name=Akanksha WHERE id=1
+26. Update name by using name => UPDATE Students SET name=Yatharth WHERE name=Yath
 27. Same error checkings shown above applicable here too. (Table name, etc.)
 28. Change dept to ENTC => UPDATE Students SET dept=ENTC WHERE id=1 OR name=Ansh
 29. Change Ansh's dept to CS back (Not the right command) => UPDATE Students SET dept=CS WHERE id=3 AND name=Yatharth
@@ -53,5 +53,13 @@ INSERT INTO Students VALUES (1, Aka, CS)
 INSERT INTO Students VALUES (2, Amol, CS)
 INSERT INTO Students VALUES (3, Ansh, CS)
 INSERT INTO Students VALUES (4, Yath, CS)
+
+34. Select all for name yath => SELECT * FROM Students WHERE name=Yath
+35. Select name, dept for id=3 => SELECT name, dept FROM Students WHERE id=3
+36. Select all => SELECT * FROM Students
+37. SELECT * FROM Students WHERE id=2 AND dept=CS
+38. SELECT * FROM Students WHERE id=1 OR name=Yath
+39. Doubt (Nothing Selected) => SELECT * FROM Students WHERE id=1 AND name=Ansh
+40. SELECT * FROM Students WHERE id=3 AND name=Ansh
 
 
