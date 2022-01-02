@@ -49,7 +49,7 @@ public class Select {
             if(rowsAffected == null){
                 return "[!!] Invalid operator for type String";
             }else if(rowsAffected.size() == 0){
-                return "Nothing Selected";
+                return "0 Rows Selected";
             }
 
             boolean valuesSelected = selectTable(tableCSV, rowsAffected, columnsAffected);

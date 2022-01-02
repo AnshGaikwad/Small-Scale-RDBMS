@@ -95,6 +95,7 @@ public class Update {
                             e.printStackTrace();
                         }
                     }
+                    System.out.println(columns[c] + " " + attribute);
                     if(columns[c].contains("FOREIGN KEY")){
                         String tableFk = "", column = "";
                         for(int t = 0; t < tableAttributes.length; t++){

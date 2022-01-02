@@ -53,7 +53,6 @@ public class Create {
         return false;
     }
 
-    // CREATE TABLE Students (id INT CHECK (id>0), name STR, dept STR, PRIMARY KEY (id), FOREIGN KEY (dept) REFERENCES Depts (name))
     private String appendAttributes(String schemaCSV, String tableName) {
 
         CSVWriter tableWriter, schemaWriter;
