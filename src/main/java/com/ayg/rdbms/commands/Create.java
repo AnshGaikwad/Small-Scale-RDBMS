@@ -54,12 +54,12 @@ public class Create {
     }
 
     // CREATE TABLE Students (id INT CHECK (id>0), name STR, dept STR, PRIMARY KEY (id), FOREIGN KEY (dept) REFERENCES Depts (name))
-    private boolean appendAttributes(String schemaCSV, String tableName) {
+    private String appendAttributes(String schemaCSV, String tableName) {
 
         CSVWriter tableWriter, schemaWriter;
 
         String tableCSV = tableName + ".csv";
-        String attribute = command.substring(command.indexOf("(") + 1);
+        String attribute = command.substring(command.indexOf("(") + 1, command.length()-1);
         String[] attributes = attribute.split(",");
 
         System.out.println(Arrays.toString(attributes));
@@ -79,6 +79,9 @@ public class Create {
                 columnTableFk = a.substring(a.indexOf("REFERENCES") + 11);
                 columnTableFk = columnTableFk.substring(columnTableFk.indexOf("(") + 1);
                 columnTableFk = columnTableFk.substring(0, columnTableFk.indexOf(")"));
+                String checkFK = checkFK(schemaCSV, tableFk, columnTableFk);
+                if(!Objects.equals(checkFK, "")) return checkFK;
+
             }
         }
 
@@ -87,24 +90,24 @@ public class Create {
             schemaWriter = new CSVWriter(new FileWriter(schemaCSV, true));
             StringBuilder schemaRecord = new StringBuilder((tableName + ","));
             StringBuilder tableRecord = new StringBuilder();
-            for (int i = 0; i < attributes.length; i++) {
-                if(attributes[i].contains("PRIMARY KEY") || attributes[i].contains("FOREIGN KEY")) continue;
-                tableRecord.append(attributes[i].trim().split(" ")[0]).append(",");
-                String columnName = attributes[i].trim().split(" ")[0];
-                for(String a : attributes[i].trim().split(" ")){
-                    if(a.contains("(") && a.contains(")"))
+            for (String s : attributes) {
+                if (s.contains("PRIMARY KEY") || s.contains("FOREIGN KEY")) continue;
+                tableRecord.append(s.trim().split(" ")[0]).append(",");
+                String columnName = s.trim().split(" ")[0];
+                for (String a : s.trim().split(" ")) {
+                    if (a.contains("(") && a.contains(")"))
                         a = a.substring(a.indexOf("(") + 1, a.indexOf(")"));
-                    if(a.contains("NOT")) {
+                    if (a.contains("NOT")) {
                         schemaRecord.append("NOT NULL").append(",");
                         continue;
                     }
                     schemaRecord.append(a).append(",");
                 }
 
-                if(columnPk != null && Objects.equals(columnName, columnPk)){
+                if (columnPk != null && Objects.equals(columnName, columnPk)) {
                     schemaRecord.append("PRIMARY KEY").append(",");
                 }
-                if(columnFk != null && Objects.equals(columnName, columnFk)){
+                if (columnFk != null && Objects.equals(columnName, columnFk)) {
                     schemaRecord.append("FOREIGN KEY").append(",");
                     schemaRecord.append(tableFk).append(",");
                     schemaRecord.append(columnTableFk).append(",");
@@ -126,6 +129,42 @@ public class Create {
         return true;
     }
 
+    private String checkFK(String schemaCSV, String tableFk, String columnTableFk) {
+        File schemaFile = new File(schemaCSV);
+
+        // Checking if the specified file exists or not
+        if (schemaFile.exists()) {
+            CSVReader reader, tableReader;
+            try {
+                reader = new CSVReader(new FileReader(schemaCSV));
+
+                //Read CSV line by line and use the string array as you want
+                String[] nextLine;
+                while ((nextLine = reader.readNext()) != null) {
+                    if(nextLine[0].contains(tableFk)){
+                        String tableCSV = tableFk + ".csv";
+                        tableReader = new CSVReader(new FileReader(tableCSV));
+                        for(String tR : tableReader.readNext()){
+                            if(tR.contains(columnTableFk)){
+                                return "";
+                            }
+                        }
+                        return "[!!] Foreign Key Table doesn't exists";
+                    }
+                    else{
+                        return "[!!] Foreign Key Table doesn't exists";
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            return "[!!] Foreign Key Table doesn't exists";
+        }
+
+        return "";
+    }
+
     public String createTable() {
         String tableName = command.split(" ")[2];
         String schemaCSV = "schema.csv";
@@ -137,7 +176,7 @@ public class Create {
 
         boolean appendAttributesDone = appendAttributes(schemaCSV, tableName);
         if (!appendAttributesDone) {
-            return "[!!] Attributes aren't updated";
+            return "[!!] Foreign Key Table Doesn't ";
         }
 
         return "";
