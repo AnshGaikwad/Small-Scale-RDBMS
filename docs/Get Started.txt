@@ -98,7 +98,9 @@ OR
 
 // To Do
 
+CREATE TABLE Dept (id INT, name STR)
 CREATE TABLE Students (id INT CHECK (id>0), name STR, dept STR, PRIMARY KEY (id), FOREIGN KEY (dept) REFERENCES Depts (name))
+INSERT INTO Students VALUES (1, Aka, CS)
 
 CREATE TABLE table_name ( attribute_1 attribute1_type CHECK (constraint1),
 attribute_2 attribute2_type, …, PRIMARY KEY ( attribute_1, attribute_2 ),

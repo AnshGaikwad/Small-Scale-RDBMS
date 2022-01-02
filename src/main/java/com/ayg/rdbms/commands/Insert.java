@@ -1,7 +1,6 @@
 package com.ayg.rdbms.commands;
 
 import com.ayg.rdbms.utils.CheckConstraint;
-import com.ayg.rdbms.utils.OperatorUtil;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
@@ -41,6 +40,9 @@ public class Insert {
 
         String[] attributes = attribute.split(",");
         String checkConstraints = checkConstraints(attributes, tableAttributes, tableCSV);
+        if(!checkConstraints.equals("")){
+            return checkConstraints;
+        }
 
         try {
             boolean insertInTable = insertInTable(attributes, tableCSV);
@@ -63,8 +65,10 @@ public class Insert {
 
         String[] columns = sb.toString().split("-");
 
-        for(int i = 0; i < columns.length - 1; i++){
+        System.out.println(Arrays.toString(columns));
+        for(int i = 0; i < columns.length; i++){
             if(columns[i].contains("PRIMARY KEY")){
+                System.out.println(attributes[i]);
                 if(Objects.equals(attributes[i], "")){
                     return "[!!] Not Null Constraint Violated";
                 }
@@ -81,9 +85,16 @@ public class Insert {
                 }
             }
             if(columns[i].contains("FOREIGN KEY")){
-                String[] fk = columns[i].split(",");
-                String tableFk = fk[3].trim() + ".csv";
-                String column = fk[4].trim();
+                System.out.println(Arrays.toString(tableAttributes));
+                String tableFk = "", column = "";
+                for(int t = 0; t < tableAttributes.length; t++){
+                    if(tableAttributes[t].contains("FOREIGN KEY")){
+                        tableFk = tableAttributes[t+1] + ".csv";
+                        column = tableAttributes[t+2];
+                        break;
+                    }
+                }
+                System.out.println(tableFk + " " + column);
 
                 try {
                     CSVReader reader = new CSVReader(new FileReader(tableFk));
@@ -95,11 +106,15 @@ public class Insert {
                         }
                     }
                     boolean violated = true;
+
                     while((nextLine = reader.readNext()) != null){
-                        if(Objects.equals(nextLine[columnNumber], attributes[i])){
+                        System.out.println(nextLine[columnNumber] + attributes[i]);
+                        if(Objects.equals(nextLine[columnNumber].trim(), attributes[i].trim())){
+                            System.out.println("HERE");
                             violated = false;
                         }
                     }
+                    System.out.println(violated);
 
                     if(violated){
                         return "[!!] Referential Integrity Constraint Violated";
@@ -130,9 +145,9 @@ public class Insert {
             }
             if(columns[i].contains("CHECK")){
                 String condition = "";
-                for(int c = 0; c < columns.length; c++){
-                    if(columns[c].contains("CHECK")){
-                        condition = columns[c+1];
+                for(int c = 0; c < tableAttributes.length; c++){
+                    if(tableAttributes[c].contains("CHECK")){
+                        condition = tableAttributes[c+1];
                         break;
                     }
                 }
@@ -144,7 +159,7 @@ public class Insert {
                     }
                 }
 
-                String value = condition.substring(condition.indexOf(operator + operator.length()));
+                String value = condition.substring(condition.indexOf(operator) + operator.length());
                 boolean check = false;
                 CheckConstraint checkConstraint = new CheckConstraint(attributes[i], operator, value);
                 switch (operator) {
@@ -191,9 +206,7 @@ public class Insert {
         String attribute = command.substring(command.indexOf("(") + 1);
         attribute = attribute.substring(0, attribute.indexOf(")"));
         String[] attributes = attribute.split(",");
-
         System.out.println(Arrays.toString(attributes));
-        System.out.println(Arrays.toString(tableAttributes));
 
         if(numOfAttributes == attributes.length){
 
@@ -202,17 +215,22 @@ public class Insert {
                 try {
                     int intValue = Integer.parseInt(attributes[0]);
                 } catch (NumberFormatException e) {
-                    return "[!!] Required INT type";
+                    if(!Objects.equals(attributes[0], ""))
+                        return "[!!] Required INT type";
                 }
             }
 
+            int count = 0;
+
             for(int i = 3; i < tableAttributes.length; i++){
                 if(i+2 <= tableAttributes.length && Objects.equals(tableAttributes[i], "-")){
+                    count++;
                     if(Objects.equals(tableAttributes[i + 2], "INT")){
                         try {
-                            int intValue = Integer.parseInt(attributes[0]);
+                            int intValue = Integer.parseInt(attributes[count]);
                         } catch (NumberFormatException e) {
-                            return "[!!] Required INT type";
+                            if(!Objects.equals(attributes[count], ""))
+                                return "[!!] Required INT type";
                         }
                     }
                 }

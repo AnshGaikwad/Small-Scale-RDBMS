@@ -5,12 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c171dd94-e897-4ef3-af71-25e5caa854be" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Depts.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Depts.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Students.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Students.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Get Started.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Get Started.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ayg/rdbms/commands/Insert.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ayg/rdbms/commands/Insert.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ayg/rdbms/commands/Create.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ayg/rdbms/commands/Create.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -64,7 +76,7 @@
       <option name="presentableId" value="Default" />
       <updated>1641112492443</updated>
       <workItem from="1641112493352" duration="2371000" />
-      <workItem from="1641117211988" duration="10280000" />
+      <workItem from="1641117211988" duration="18678000" />
     </task>
     <servers />
   </component>
