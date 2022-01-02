@@ -27,10 +27,10 @@
 24. INSERT INTO Students VALUES (4, Yath, CS)
 
 25. DELETE FROM Students WHERE id>3
-26. DELETE FROM Students WHERE id=2 AND name=Amol
-27. DELETE FROM Students WHERE id>=1 OR name=Ansh
+26. DELETE FROM Students WHERE id=2 AND sname=Amol
+27. DELETE FROM Students WHERE id>=1 OR sname=Ansh
 
-"id","name","dept"
+"id","sname","dept"
 "1","Aka","CS"
 "2","Amol","ENTC"
 "3","Ansh","CS"
@@ -38,7 +38,7 @@
 
 28. DELETE FROM Students
 
-"id","name","dept"
+"id","sname","dept"
 "1","Aka","CS"
 "2","Amol","ENTC"
 "3","Ansh","CS"

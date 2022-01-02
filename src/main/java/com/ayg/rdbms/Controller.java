@@ -75,7 +75,7 @@ public class Controller {
             Select select = new Select(command);
             String output = select.selectFromTable();
             outputLabel.setText(output);
-        } else if (command.contains("Quit")) {
+        } else if (command.contains("QUIT")) {
             System.exit(0);
         } else {
             outputLabel.setText("[!!] Invalid Command");
