@@ -82,7 +82,25 @@ public class Create {
                 String checkFK = checkFK(schemaCSV, tableFk, columnTableFk);
                 System.out.println(checkFK);
                 if(!Objects.equals(checkFK, "")) return checkFK;
-
+                // CREATE TABLE Students (id INT CHECK (id>0), name STR, dept STR, PRIMARY KEY (id), FOREIGN KEY (dept) REFERENCES Depts (name))
+            }else if(a.contains("CHECK")){
+                String condition = command.substring(command.indexOf("CHECK")+7);
+                condition = condition.substring(0, condition.indexOf(")"));
+                String[] operators = {"<=", ">=", "!=", "=", "<", ">"};
+                String operator = "", value;
+                for(String o : operators){
+                    if(condition.contains(o)){
+                        operator = o;
+                    }
+                }
+                value = condition.substring(condition.indexOf(operator) + operator.length()+1);
+                try{
+                    int valueInt = Integer.parseInt(value);
+                }catch(Exception e){
+                    if(operator.equals("<=") || operator.equals(">=") || operator.equals(">")|| operator.equals("<")){
+                        return "[!!] Invalid Check Constraint";
+                    }
+                }
             }
         }
 
