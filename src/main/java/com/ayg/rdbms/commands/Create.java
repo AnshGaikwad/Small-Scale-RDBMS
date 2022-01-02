@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.jar.Attributes;
 
 public class Create {
 
@@ -50,14 +53,34 @@ public class Create {
         return false;
     }
 
+    // CREATE TABLE Students (id INT CHECK (id>0), name STR, dept STR, PRIMARY KEY (id), FOREIGN KEY (dept) REFERENCES Depts (name))
     private boolean appendAttributes(String schemaCSV, String tableName) {
 
         CSVWriter tableWriter, schemaWriter;
 
         String tableCSV = tableName + ".csv";
         String attribute = command.substring(command.indexOf("(") + 1);
-        attribute = attribute.substring(0, attribute.indexOf(")"));
-        String[] attributes = attribute.split(" ");
+        String[] attributes = attribute.split(",");
+
+        System.out.println(Arrays.toString(attributes));
+
+        String columnPk = null, columnFk = null, tableFk = null, columnTableFk = null;
+
+        for(String a : attributes){
+
+            if(a.contains("PRIMARY KEY")){
+                columnPk = a.substring(a.indexOf("(") + 1);
+                columnPk = columnPk.substring(0, columnPk.indexOf(")"));
+            }else if(a.contains("FOREIGN KEY")){
+                columnFk = a.substring(a.indexOf("(") + 1);
+                columnFk = columnFk.substring(0, columnFk.indexOf(")"));
+                tableFk = a.substring(a.indexOf("REFERENCES") + 11);
+                tableFk = tableFk.substring(0, tableFk.indexOf("(") - 1);
+                columnTableFk = a.substring(a.indexOf("REFERENCES") + 11);
+                columnTableFk = columnTableFk.substring(columnTableFk.indexOf("(") + 1);
+                columnTableFk = columnTableFk.substring(0, columnTableFk.indexOf(")"));
+            }
+        }
 
         try {
             tableWriter = new CSVWriter(new FileWriter(tableCSV));
@@ -65,11 +88,24 @@ public class Create {
             StringBuilder schemaRecord = new StringBuilder((tableName + ","));
             StringBuilder tableRecord = new StringBuilder();
             for (int i = 0; i < attributes.length; i++) {
-                schemaRecord.append(attributes[i]);
-                if (i % 2 == 0) {
-                    tableRecord.append(attributes[i]).append(",");
-                    schemaRecord.append(",");
+                if(attributes[i].contains("PRIMARY KEY") || attributes[i].contains("FOREIGN KEY")) continue;
+                tableRecord.append(attributes[i].trim().split(" ")[0]).append(",");
+                String columnName = attributes[i].trim().split(" ")[0];
+                for(String a : attributes[i].trim().split(" ")){
+                    if(a.contains("(") && a.contains(")"))
+                        a = a.substring(a.indexOf("(") + 1, a.indexOf(")"));
+                    schemaRecord.append(a).append(",");
                 }
+
+                if(columnPk != null && Objects.equals(columnName, columnPk)){
+                    schemaRecord.append("PRIMARY KEY").append(",");
+                }
+                if(columnFk != null && Objects.equals(columnName, columnFk)){
+                    schemaRecord.append("FOREIGN KEY").append(",");
+                    schemaRecord.append(tableFk).append(",");
+                    schemaRecord.append(columnTableFk).append(",");
+                }
+                schemaRecord.append("-").append(",");
             }
 
             String[] schemaRecords = schemaRecord.toString().split(",");
