@@ -62,8 +62,6 @@ public class Create {
         String attribute = command.substring(command.indexOf("(") + 1, command.length()-1);
         String[] attributes = attribute.split(",");
 
-        System.out.println(Arrays.toString(attributes));
-
         String columnPk = null, columnFk = null, tableFk = null, columnTableFk = null;
 
         for(String a : attributes){
@@ -80,7 +78,6 @@ public class Create {
                 columnTableFk = columnTableFk.substring(columnTableFk.indexOf("(") + 1);
                 columnTableFk = columnTableFk.substring(0, columnTableFk.indexOf(")"));
                 String checkFK = checkFK(schemaCSV, tableFk, columnTableFk);
-                System.out.println(checkFK);
                 if(!Objects.equals(checkFK, "")) return checkFK;
                 // CREATE TABLE Students (id INT CHECK (id>0), name STR, dept STR, PRIMARY KEY (id), FOREIGN KEY (dept) REFERENCES Depts (name))
             }else if(a.contains("CHECK")){
@@ -91,9 +88,10 @@ public class Create {
                 for(String o : operators){
                     if(condition.contains(o)){
                         operator = o;
+                        break;
                     }
                 }
-                value = condition.substring(condition.indexOf(operator) + operator.length()+1);
+                value = condition.substring(condition.indexOf(operator) + operator.length());
                 try{
                     int valueInt = Integer.parseInt(value);
                 }catch(Exception e){

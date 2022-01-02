@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="c171dd94-e897-4ef3-af71-25e5caa854be" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ayg/rdbms/commands/Select.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ayg/rdbms/commands/Select.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ayg/rdbms/commands/Create.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ayg/rdbms/commands/Create.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ayg/rdbms/commands/Create.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ayg/rdbms/commands/Create.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +73,7 @@
       <option name="presentableId" value="Default" />
       <updated>1641112492443</updated>
       <workItem from="1641112493352" duration="2371000" />
-      <workItem from="1641117211988" duration="22962000" />
+      <workItem from="1641117211988" duration="23909000" />
     </task>
     <servers />
   </component>
