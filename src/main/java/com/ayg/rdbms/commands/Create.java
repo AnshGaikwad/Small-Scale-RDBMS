@@ -94,6 +94,10 @@ public class Create {
                 for(String a : attributes[i].trim().split(" ")){
                     if(a.contains("(") && a.contains(")"))
                         a = a.substring(a.indexOf("(") + 1, a.indexOf(")"));
+                    if(a.contains("NOT")) {
+                        schemaRecord.append("NOT NULL").append(",");
+                        continue;
+                    }
                     schemaRecord.append(a).append(",");
                 }
 
