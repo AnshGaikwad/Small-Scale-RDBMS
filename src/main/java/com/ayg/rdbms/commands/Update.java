@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,15 +57,30 @@ public class Update {
 
     private ArrayList<Integer> getColumnsAffected(String[] attributesAndValues, String[] tableAttributes) {
 
+        System.out.println(Arrays.toString(attributesAndValues));
+        System.out.println(Arrays.toString(tableAttributes));
+
         ArrayList<Integer> columnsAffected = new ArrayList<>();
-        for(int i = 1; i < tableAttributes.length; i+=2){
-            for (String aAV : attributesAndValues) {
-                if (aAV.contains(tableAttributes[i])) {
-                    columnsAffected.add(i/2);
-                    break;
+
+        for (String aAV : attributesAndValues) {
+            if(aAV.contains(tableAttributes[1])){
+                columnsAffected.add(0);
+            }
+        }
+
+        int count = 0;
+        for(int i = 3; i < tableAttributes.length - 1; i++){
+            if(Objects.equals(tableAttributes[i], "-")){
+                count++;
+                for (String aAV : attributesAndValues) {
+                    if(aAV.contains(tableAttributes[i+1])){
+                        columnsAffected.add(count);
+                    }
                 }
             }
         }
+
+        System.out.println(columnsAffected);
 
         return columnsAffected;
 
