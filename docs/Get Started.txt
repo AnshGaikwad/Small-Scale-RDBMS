@@ -96,3 +96,21 @@ OR
 46. HELP SELECT
 47. QUIT
 
+// To Do
+
+CREATE TABLE table_name ( attribute_1 attribute1_type CHECK (constraint1),
+attribute_2 attribute2_type, …, PRIMARY KEY ( attribute_1, attribute_2 ),
+FOREIGN KEY ( attribute_y ) REFERENCES table_x ( attribute_t ), FOREIGN
+KEY ( attribute_w ) REFERENCES table_y ( attribute_z )… );
+
+snum -- int -- primary key -- snum>0
+sname -- char(30)
+age -- int -- age > 0 AND age < 100
+deptid -- int -- foreign key references Department(deptid)
+
+UNIQUE
+NOT NULL
+CHECK
+
+PK
+FK
