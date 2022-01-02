@@ -5,7 +5,6 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class Insert {
@@ -65,10 +64,8 @@ public class Insert {
 
         String[] columns = sb.toString().split("-");
 
-        System.out.println(Arrays.toString(columns));
         for(int i = 0; i < columns.length; i++){
             if(columns[i].contains("PRIMARY KEY")){
-                System.out.println(attributes[i]);
                 if(Objects.equals(attributes[i], "")){
                     return "[!!] Not Null Constraint Violated";
                 }
@@ -85,7 +82,6 @@ public class Insert {
                 }
             }
             if(columns[i].contains("FOREIGN KEY")){
-                System.out.println(Arrays.toString(tableAttributes));
                 String tableFk = "", column = "";
                 for(int t = 0; t < tableAttributes.length; t++){
                     if(tableAttributes[t].contains("FOREIGN KEY")){
@@ -94,7 +90,6 @@ public class Insert {
                         break;
                     }
                 }
-                System.out.println(tableFk + " " + column);
 
                 try {
                     CSVReader reader = new CSVReader(new FileReader(tableFk));
@@ -108,13 +103,10 @@ public class Insert {
                     boolean violated = true;
 
                     while((nextLine = reader.readNext()) != null){
-                        System.out.println(nextLine[columnNumber] + attributes[i]);
                         if(Objects.equals(nextLine[columnNumber].trim(), attributes[i].trim())){
-                            System.out.println("HERE");
                             violated = false;
                         }
                     }
-                    System.out.println(violated);
 
                     if(violated){
                         return "[!!] Referential Integrity Constraint Violated";
@@ -206,7 +198,6 @@ public class Insert {
         String attribute = command.substring(command.indexOf("(") + 1);
         attribute = attribute.substring(0, attribute.indexOf(")"));
         String[] attributes = attribute.split(",");
-        System.out.println(Arrays.toString(attributes));
 
         if(numOfAttributes == attributes.length){
 
