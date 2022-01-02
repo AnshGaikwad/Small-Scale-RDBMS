@@ -1,0 +1,72 @@
+1. CREATE TABLE Students (id INT CHECK (id>0), sname STR, dept STR, PRIMARY KEY (id), FOREIGN KEY (dept) REFERENCES Depts (dname))
+2. CREATE TABLE Depts (id INT, dname STR, PRIMARY KEY (id))
+3. CREATE TABLE Students (id INT CHECK (id>0), sname STR, dept STR, PRIMARY KEY (id), FOREIGN KEY (dept) REFERENCES Depts (abc))
+4. CREATE TABLE Students (id INT CHECK (id>0), sname STR, dept STR, PRIMARY KEY (id), FOREIGN KEY (dept) REFERENCES Depts (dname))
+5. CREATE TABLE Students (id INT, name STR, dept STR)
+6. CREATE TABLE Student (id INT, name STR, dept STR)
+
+7. HELP TABLES
+8. DROP TABLE Student
+9. HELP TABLES
+
+10. DESCRIBE Students
+11. DESCRIBE Depts
+12. DESCRIBE Student
+
+13. INSERT INTO Students VALUES (-1, Aka, CS)
+14. INSERT INTO Students VALUES (, Aka, CS)
+15. INSERT INTO Students VALUES (1, Aka, CS)
+16. INSERT INTO Depts VALUES (1, CS)
+17. INSERT INTO Students VALUES (1, Aka, CS)
+18. INSERT INTO Students VALUES (2, Amol, ENTC)
+19. INSERT INTO Depts VALUES (1, ENTC)
+20. INSERT INTO Depts VALUES (2, ENTC)
+21. INSERT INTO Students VALUES (2, Amol, ENTC)
+22. INSERT INTO Students VALUES (2, Ansh, CS)
+23. INSERT INTO Students VALUES (3, Ansh, CS)
+24. INSERT INTO Students VALUES (4, Yath, CS)
+
+25. DELETE FROM Students WHERE id>3
+26. DELETE FROM Students WHERE id=2 AND sname=Amol
+27. DELETE FROM Students WHERE id>=1 OR sname=Ansh
+
+"id","sname","dept"
+"1","Aka","CS"
+"2","Amol","ENTC"
+"3","Ansh","CS"
+"4","Yath","CS"
+
+28. DELETE FROM Students
+
+"id","sname","dept"
+"1","Aka","CS"
+"2","Amol","ENTC"
+"3","Ansh","CS"
+"4","Yath","CS"
+
+29. UPDATE Students SET sname=Akanksha WHERE id=1
+30. UPDATE Students SET sname=Yatharth WHERE id=4 OR sname=Amol
+31. UPDATE Students SET sname=Amol, dept=CS WHERE id=2 AND dept=ENTC
+32. UPDATE Students SET sname=XYZ, dept=CHEM WHERE id=4 OR sname=Ansh
+33. UPDATE Students SET id=, dept=CS WHERE sname=Ansh
+34. UPDATE Students SET id=1, dept=ENTC WHERE sname=Ansh
+35. UPDATE Students SET sname=Akanksha
+36. UPDATE Students SET sname=Yatharth, dept=ENTC
+
+"id","sname","dept"
+"1","Akanksha","CS"
+"2","Amol","CS"
+"3","Ansh","CS"
+"4","Yatharth","CS"
+
+37. SELECT name, dept FROM Students WHERE id=3
+38. SELECT * FROM Students
+39. SELECT * FROM Students WHERE id=2 AND dept=CS
+40. SELECT * FROM Students WHERE id=1 OR sname=Yath
+41. SELECT * FROM Students WHERE id=1 AND sname=Amol
+42. SELECT * FROM Students WHERE id=2 AND sname=Amol
+43. SELECT * FROM Depts
+
+43. HELP SELEC
+44. HELP SELECT
+45. QUIT

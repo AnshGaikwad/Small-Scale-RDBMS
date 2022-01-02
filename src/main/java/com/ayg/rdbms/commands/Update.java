@@ -1,5 +1,6 @@
 package com.ayg.rdbms.commands;
 
+import com.ayg.rdbms.utils.CheckConstraint;
 import com.ayg.rdbms.utils.OperatorUtil;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -9,6 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,6 +42,10 @@ public class Update {
         String[] attributesAndValues = getAttributesAndValues();
         ArrayList<Integer> columnsAffected = getColumnsAffected(attributesAndValues, tableAttributes);
 
+        String checkConstraints  = checkConstraints(attributesAndValues, tableAttributes, tableCSV);
+        if(!checkConstraints.equals(""))
+            return checkConstraints;
+
         if(rowsAffected == null){
             return "[!!] Invalid operator for type String";
         }else if(rowsAffected.size() == 0){
@@ -54,14 +60,155 @@ public class Update {
         return Integer.toString(rowsAffected.size());
     }
 
+    private String checkConstraints(String[] attributesAndValues, String[] tableAttributes, String tableCSV) {
+
+        StringBuilder sb = new StringBuilder();
+        for(String tA : tableAttributes){
+            sb.append(tA);
+        }
+
+        String[] columns = sb.toString().split("-");
+
+        for(int i = 0; i < attributesAndValues.length; i++){
+            String attribute = attributesAndValues[i].split("=")[0].trim();
+            String value;
+            try {
+                value = attributesAndValues[i].split("=")[1].trim();
+            }catch (ArrayIndexOutOfBoundsException e){
+                return "[!!] Not Null Constraint Violated";
+            }
+            for(int c = 0; c < columns.length; c++){
+                if(columns[c].contains(attribute)){
+                    if(columns[c].contains("PRIMARY KEY")){
+                        if(Objects.equals(value, "")){
+                            return "[!!] Not Null Constraint Violated";
+                        }
+                        try {
+                            CSVReader reader = new CSVReader(new FileReader(tableCSV));
+                            String[] nextLine = reader.readNext();
+                            while((nextLine = reader.readNext()) != null){
+                                if(Objects.equals(value, nextLine[c])){
+                                    return "[!!] Unique Constraint Violated";
+                                }
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if(columns[c].contains("FOREIGN KEY")){
+                        String tableFk = "", column = "";
+                        for(int t = 0; t < tableAttributes.length; t++){
+                            if(tableAttributes[t].contains("FOREIGN KEY")){
+                                tableFk = tableAttributes[t+1] + ".csv";
+                                column = tableAttributes[t+2];
+                                break;
+                            }
+                        }
+
+                        try {
+                            CSVReader reader = new CSVReader(new FileReader(tableFk));
+                            String[] nextLine = reader.readNext();
+                            int columnNumber = -1;
+                            for(int n = 0; n < nextLine.length; n++){
+                                if(column.equals(nextLine[n])){
+                                    columnNumber = n;
+                                }
+                            }
+
+                            boolean violated = true;
+
+                            while((nextLine = reader.readNext()) != null){
+                                if(Objects.equals(nextLine[columnNumber].trim(), value.trim())){
+                                    violated = false;
+                                }
+                            }
+
+                            if(violated){
+                                return "[!!] Referential Integrity Constraint Violated";
+                            }
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if(columns[c].contains("NOT NULL")){
+                        if(Objects.equals(value, "")){
+                            return "[!!] Not Null Constraint Violated";
+                        }
+                    }
+                    if(columns[c].contains("UNIQUE")){
+                        try {
+                            CSVReader reader = new CSVReader(new FileReader(tableCSV));
+                            String[] nextLine = reader.readNext();
+                            while((nextLine = reader.readNext()) != null){
+                                if(Objects.equals(value, nextLine[c])){
+                                    return "[!!] Unique Constraint Violated";
+                                }
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if(columns[c].contains("CHECK")){
+                        String condition = "";
+                        for(int t = 0; t < tableAttributes.length; t++){
+                            if(tableAttributes[t].contains("CHECK")){
+                                condition = tableAttributes[t+1];
+                                break;
+                            }
+                        }
+                        String[] operators = {"<=", ">=", "!=", "=", "<", ">"};
+                        String operator = "";
+                        for(String o : operators){
+                            if(condition.contains(o)){
+                                operator = o;
+                            }
+                        }
+
+                        String checkValue = condition.substring(condition.indexOf(operator) + operator.length());
+                        boolean check = false;
+                        CheckConstraint checkConstraint = new CheckConstraint(value, operator, checkValue);
+                        switch (operator) {
+                            case "<=" -> check = checkConstraint.lessThanEqualTo();
+                            case ">=" -> check = checkConstraint.moreThanEqualTo();
+                            case "!=" -> check = checkConstraint.notEqualTo();
+                            case "=" -> check = checkConstraint.equalTo();
+                            case "<" -> check = checkConstraint.lessThan();
+                            case ">" -> check = checkConstraint.moreThan();
+                        }
+
+                        if(!check){
+                            return "[!!] Check Constraint Violated";
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
+        return "";
+    }
+
     private ArrayList<Integer> getColumnsAffected(String[] attributesAndValues, String[] tableAttributes) {
 
         ArrayList<Integer> columnsAffected = new ArrayList<>();
-        for(int i = 1; i < tableAttributes.length; i+=2){
-            for (String aAV : attributesAndValues) {
-                if (aAV.contains(tableAttributes[i])) {
-                    columnsAffected.add(i/2);
-                    break;
+
+        for (String aAV : attributesAndValues) {
+            if(aAV.contains(tableAttributes[1])){
+                columnsAffected.add(0);
+            }
+        }
+
+        int count = 0;
+        for(int i = 3; i < tableAttributes.length - 1; i++){
+            if(Objects.equals(tableAttributes[i], "-")){
+                count++;
+                for (String aAV : attributesAndValues) {
+                    if(aAV.contains(tableAttributes[i+1])){
+                        columnsAffected.add(count);
+                    }
                 }
             }
         }

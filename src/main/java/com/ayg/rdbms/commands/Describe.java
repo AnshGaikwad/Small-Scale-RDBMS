@@ -4,6 +4,7 @@ import com.opencsv.CSVReader;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Describe {
 
@@ -40,8 +41,14 @@ public class Describe {
             while ((nextLine = reader.readNext()) != null) {
                 if (nextLine[0].equals(tableName)) {
                     sb.append(nextLine[0]).append("\n");
-                    for (int i = 1; i < nextLine.length - 1; i += 2) {
-                        sb.append(nextLine[i]).append(" -- ").append(nextLine[i + 1]).append("\n");
+                    for (int i = 1; i < nextLine.length - 1; i++) {
+                        if(!Objects.equals(nextLine[i], "-"))
+                            sb.append(nextLine[i]);
+                        if(Objects.equals(nextLine[i+1], "-")){
+                            sb.append("\n");
+                        }else if(!Objects.equals(nextLine[i], "-")){
+                            sb.append(" -- ");
+                        }
                     }
                     read = true;
                 }
