@@ -1,2 +1,2 @@
+"Depts","id","INT","-","name","STR","-"
 "Students","id","INT","CHECK","id>0","PRIMARY KEY","-","name","STR","-","dept","STR","FOREIGN KEY","Depts","name","-"
-"Dept","id","INT","-","name","STR","-"

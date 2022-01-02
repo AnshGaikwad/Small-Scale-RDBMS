@@ -80,6 +80,7 @@ public class Create {
                 columnTableFk = columnTableFk.substring(columnTableFk.indexOf("(") + 1);
                 columnTableFk = columnTableFk.substring(0, columnTableFk.indexOf(")"));
                 String checkFK = checkFK(schemaCSV, tableFk, columnTableFk);
+                System.out.println(checkFK);
                 if(!Objects.equals(checkFK, "")) return checkFK;
 
             }
@@ -126,7 +127,7 @@ public class Create {
             e.printStackTrace();
         }
 
-        return true;
+        return "";
     }
 
     private String checkFK(String schemaCSV, String tableFk, String columnTableFk) {
@@ -149,20 +150,15 @@ public class Create {
                                 return "";
                             }
                         }
-                        return "[!!] Foreign Key Table doesn't exists";
-                    }
-                    else{
-                        return "[!!] Foreign Key Table doesn't exists";
+                        return "[!!] Foreign Key Column doesn't exists";
                     }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else{
-            return "[!!] Foreign Key Table doesn't exists";
         }
 
-        return "";
+        return "[!!] Foreign Key Table doesn't exists";
     }
 
     public String createTable() {
@@ -174,9 +170,9 @@ public class Create {
             return "[!!] Table exists already";
         }
 
-        boolean appendAttributesDone = appendAttributes(schemaCSV, tableName);
-        if (!appendAttributesDone) {
-            return "[!!] Foreign Key Table Doesn't ";
+        String appendAttributesDone = appendAttributes(schemaCSV, tableName);
+        if (!appendAttributesDone.equals("")) {
+            return appendAttributesDone;
         }
 
         return "";
