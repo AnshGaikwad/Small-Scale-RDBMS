@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -95,16 +96,22 @@ public class Select {
 
     private ArrayList<Integer> getColumnsAffected(String[] columns, String[] tableAttributes) {
 
+        StringBuilder sb = new StringBuilder();
+        for(String tA : tableAttributes){
+            sb.append(tA);
+        }
+
+        String[] columnDivisions = sb.toString().split("-");
+
         ArrayList<Integer> columnsAffected = new ArrayList<>();
-        for(int i = 1; i < tableAttributes.length; i+=2){
-            for (String column : columns) {
-                if(column.contains("*")){
-                    columnsAffected.add(i/2);
-                    break;
-                }
-                if (column.contains(tableAttributes[i])) {
-                    columnsAffected.add(i/2);
-                    break;
+        for(int i = 0; i < columnDivisions.length; i++){
+            if(Objects.equals(columns[0], "*")){
+                columnsAffected.add(i);
+            }else{
+                for(String c : columns){
+                    if(columnDivisions[i].contains(c)){
+                        columnsAffected.add(i);
+                    }
                 }
             }
         }
