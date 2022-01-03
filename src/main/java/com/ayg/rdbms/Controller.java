@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 import java.util.Objects;
 
@@ -20,7 +21,14 @@ public class Controller {
     private TextField commandEditText;
 
     @FXML
+    private Text timeText;
+
+    @FXML
     protected void execute() {
+
+        long start = System.currentTimeMillis();
+
+        // start of function
 
         String command = commandEditText.getText();
 
@@ -80,5 +88,8 @@ public class Controller {
         } else {
             outputLabel.setText("[!!] Invalid Command");
         }
+
+        long end = System.currentTimeMillis();
+        timeText.setText("Time Taken: " + (end - start) + " ms");
     }
 }
