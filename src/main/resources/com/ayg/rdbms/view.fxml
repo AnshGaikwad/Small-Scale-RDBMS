@@ -7,7 +7,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ayg.rdbms.Controller">
     <children>
         <Text layoutX="192.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Small Scale RDBMS" wrappingWidth="216.80332946777344">
@@ -30,5 +29,10 @@
                 <Font size="25.0" />
             </font>
         </Label>
+      <Text fx:id="timeText" layoutX="22.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Taken: " wrappingWidth="156.13678741455078">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
     </children>
 </AnchorPane>
